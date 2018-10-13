@@ -1,0 +1,39 @@
+{
+    "name": "nicksagona/tube-amp-calc",
+    "description": "Tube Amp Common Equations",
+    "keywords": [
+        "tube amp",
+        "common equations"
+    ],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Nick Sagona",
+            "email": "dev@nolainteractive.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "popphp/popphp": "^3.2.3",
+        "popphp/pop-http": "^3.1.2",
+        "popphp/pop-view": "^3.0.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "TubeCalc\\": "app/src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TubeCalc\\Test\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.0.x-dev"
+        }
+    }
+}

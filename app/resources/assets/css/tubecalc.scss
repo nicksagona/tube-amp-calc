@@ -1,0 +1,93 @@
+/**
+ * tubecalc.scss
+ */
+
+html {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  font-size: 0.75rem;
+  font-family: 'Source Sans Pro', arial, helvetica, verdana, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 20px 0 20px 0;
+  font-family: 'Source Sans Pro', arial, helvetica, verdana, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, div, p {
+  font-family: 'Source Sans Pro', arial, helvetica, verdana, sans-serif;
+}
+
+h1 {
+  margin: 0;
+  padding: 0 0 10px 0;
+}
+
+h3 {
+  margin: 0;
+  padding: 0;
+}
+
+label {
+  position: relative;
+  display: block;
+  font-weight: bold;
+}
+
+fieldset {
+  border: none;
+}
+
+input[type=checkbox] {
+  margin: 0;
+  padding: 0;
+}
+
+#format {
+  margin-right: 20px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.error {
+  font-weight: bold;
+  color: #f00;
+}
+
+.block {
+  display: block;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.inline {
+  display: inline;
+}
+
+.none {
+  display: none;
+}
+
+.submit-btn {
+  float: right;
+  display: block;
+  width: auto;
+}
+
+@media (max-width: 576px) {
+  h1, h3 {
+    text-align: center;
+  }
+
+  .submit-btn {
+    float: none;
+    display: block;
+    width: 100%;
+  }
+}

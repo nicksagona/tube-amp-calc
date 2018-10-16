@@ -1,3 +1,114 @@
 <?php include 'inc/header.phtml'; ?>
-            <p>Tube Amp Common Equations</p>
+            <a href="#" onclick="return tubecalc.resetAll();" class="btn btn-md btn-danger pull-right">Reset All</a>
+            <h3 class="equation-header">V = IR</h3>
+            <div class="equation">
+                <div class="equation-layout"><span>I</span><span>&nbsp;</span><span>R</span><span>&nbsp;</span><span>V</span></div>
+                <input class="form-control inline width-auto" type="text" name="i_variable_1_1" id="i_variable_1_1" value="" size="5" placeholder="Amps" />
+                <span>x</span>
+                <input class="form-control inline width-auto" type="text" name="r_variable_1_1" id="r_variable_1_1" value="" size="5" placeholder="Ohms" />
+                <span>=</span>
+                <input class="form-control inline width-auto" type="text" name="v_variable_1_1" id="v_variable_1_1" value="" size="10" placeholder="Volts" />
+                <span><a href="#" onclick="return tubecalc.reset(['i', 'r', 'v'], '1_1');" class="btn btn-sm btn-secondary">Reset</a></span>
+            </div>
+            <div class="equation">
+                <div class="equation-layout"><span>V</span><span>&nbsp;</span><span>I</span><span>&nbsp;</span><span>R</span></div>
+                <input class="form-control inline width-auto" type="text" name="v_variable_1_2" id="v_variable_1_2" value="" size="5" placeholder="Volts" />
+                <span>/</span>
+                <input class="form-control inline width-auto" type="text" name="i_variable_1_2" id="i_variable_1_2" value="" size="5" placeholder="Amps" />
+                <span>=</span>
+                <input class="form-control inline width-auto" type="text" name="r_variable_1_2" id="r_variable_1_2" value="" size="10" placeholder="Ohms" />
+                <span><a href="#" onclick="return tubecalc.reset(['i', 'r', 'v'], '1_2');" class="btn btn-sm btn-secondary">Reset</a></span>
+            </div>
+            <div class="equation">
+                <div class="equation-layout"><span>V</span><span>&nbsp;</span><span>R</span><span>&nbsp;</span><span>I</span></div>
+                <input class="form-control inline width-auto" type="text" name="v_variable_1_3" id="v_variable_1_3" value="" size="5" placeholder="Volts" />
+                <span>/</span>
+                <input class="form-control inline width-auto" type="text" name="r_variable_1_3" id="r_variable_1_3" value="" size="5" placeholder="Ohms" />
+                <span>=</span>
+                <input class="form-control inline width-auto" type="text" name="i_variable_1_3" id="i_variable_1_3" value="" size="10" placeholder="Amps" />
+                <span><a href="#" onclick="return tubecalc.reset(['i', 'r', 'v'], '1_3');" class="btn btn-sm btn-secondary">Reset</a></span>
+            </div>
+            <h3 class="equation-header">P = IV</h3>
+            <div class="equation">
+                <div class="equation-layout"><span>I</span><span>&nbsp;</span><span>V</span><span>&nbsp;</span><span>P</span></div>
+                <input class="form-control inline width-auto" type="text" name="i_variable_2_1" id="i_variable_2_1" value="" size="5" placeholder="Amps" />
+                <span>x</span>
+                <input class="form-control inline width-auto" type="text" name="v_variable_2_1" id="v_variable_2_1" value="" size="5" placeholder="Volts" />
+                <span>=</span>
+                <input class="form-control inline width-auto" type="text" name="p_variable_2_1" id="p_variable_2_1" value="" size="10" placeholder="Watts" />
+                <span><a href="#" onclick="return tubecalc.reset(['i', 'v', 'p'], '2_1');" class="btn btn-sm btn-secondary">Reset</a></span>
+            </div>
+            <div class="equation">
+                <div class="equation-layout"><span>P</span><span>&nbsp;</span><span>I</span><span>&nbsp;</span><span>V</span></div>
+                <input class="form-control inline width-auto" type="text" name="p_variable_2_2" id="p_variable_2_2" value="" size="5" placeholder="Watts" />
+                <span>/</span>
+                <input class="form-control inline width-auto" type="text" name="i_variable_2_2" id="i_variable_2_2" value="" size="5" placeholder="Amps" />
+                <span>=</span>
+                <input class="form-control inline width-auto" type="text" name="v_variable_2_2" id="v_variable_2_2" value="" size="10" placeholder="Volts" />
+                <span><a href="#" onclick="return tubecalc.reset(['i', 'v', 'p'], '2_2');" class="btn btn-sm btn-secondary">Reset</a></span>
+            </div>
+            <div class="equation">
+                <div class="equation-layout"><span>P</span><span>&nbsp;</span><span>V</span><span>&nbsp;</span><span>I</span></div>
+                <input class="form-control inline width-auto" type="text" name="p_variable_2_3" id="p_variable_2_3" value="" size="5" placeholder="Watts" />
+                <span>/</span>
+                <input class="form-control inline width-auto" type="text" name="v_variable_2_3" id="v_variable_2_3" value="" size="5" placeholder="Volts" />
+                <span>=</span>
+                <input class="form-control inline width-auto" type="text" name="i_variable_2_3" id="i_variable_2_3" value="" size="10" placeholder="Amps" />
+                <span><a href="#" onclick="return tubecalc.reset(['i', 'v', 'p'], '2_3');" class="btn btn-sm btn-secondary">Reset</a></span>
+            </div>
+            <h3 class="equation-header">Variations</h3>
+            <div class="equation">
+                <div class="equation-layout"><span>V<sup>2</sup></span><span>&nbsp;</span><span>R</span><span>&nbsp;</span><span>P</span></div>
+                <input class="form-control inline width-auto" type="text" name="v_variable_3_1" id="v_variable_3_1" value="" size="5" placeholder="Volts" />
+                <span>/</span>
+                <input class="form-control inline width-auto" type="text" name="r_variable_3_1" id="r_variable_3_1" value="" size="5" placeholder="Ohms" />
+                <span>=</span>
+                <input class="form-control inline width-auto" type="text" name="p_variable_3_1" id="p_variable_3_1" value="" size="10" placeholder="Watts" />
+                <span><a href="#" onclick="return tubecalc.reset(['v', 'r', 'p'], '3_1');" class="btn btn-sm btn-secondary">Reset</a></span>
+            </div>
+            <div class="equation">
+                <div class="equation-layout"><span>R</span><span>&nbsp;</span><span>I<sup>2</sup></span><span>&nbsp;</span><span>P</span></div>
+                <input class="form-control inline width-auto" type="text" name="r_variable_3_2" id="r_variable_3_2" value="" size="5" placeholder="Ohms" />
+                <span>x</span>
+                <input class="form-control inline width-auto" type="text" name="i_variable_3_2" id="i_variable_3_2" value="" size="5" placeholder="Amps" />
+                <span>=</span>
+                <input class="form-control inline width-auto" type="text" name="p_variable_3_2" id="p_variable_3_2" value="" size="10" placeholder="Watts" />
+                <span><a href="#" onclick="return tubecalc.reset(['r', 'i', 'p'], '3_2');" class="btn btn-sm btn-secondary">Reset</a></span>
+            </div>
+            <div class="equation">
+                <div class="equation-layout"><span>V<sup>2</sup></span><span>&nbsp;</span><span>P</span><span>&nbsp;</span><span>R</span></div>
+                <input class="form-control inline width-auto" type="text" name="v_variable_3_3" id="v_variable_3_3" value="" size="5" placeholder="Volts" />
+                <span>/</span>
+                <input class="form-control inline width-auto" type="text" name="p_variable_3_3" id="p_variable_3_3" value="" size="5" placeholder="Watts" />
+                <span>=</span>
+                <input class="form-control inline width-auto" type="text" name="r_variable_3_3" id="r_variable_3_3" value="" size="10" placeholder="Ohms" />
+                <span><a href="#" onclick="return tubecalc.reset(['v', 'p', 'r'], '3_3');" class="btn btn-sm btn-secondary">Reset</a></span>
+            </div>
+            <div class="equation">
+                <div class="equation-layout"><span>P</span><span>&nbsp;</span><span>I<sup>2</sup></span><span>&nbsp;</span><span>R</span></div>
+                <input class="form-control inline width-auto" type="text" name="p_variable_3_4" id="p_variable_3_4" value="" size="5" placeholder="Watts" />
+                <span>/</span>
+                <input class="form-control inline width-auto" type="text" name="i_variable_3_4" id="i_variable_3_4" value="" size="5" placeholder="Amps" />
+                <span>=</span>
+                <input class="form-control inline width-auto" type="text" name="r_variable_3_4" id="r_variable_3_4" value="" size="10" placeholder="Ohms" />
+                <span><a href="#" onclick="return tubecalc.reset(['p', 'i', 'r'], '3_4');" class="btn btn-sm btn-secondary">Reset</a></span>
+            </div>
+            <div class="equation">
+                <div class="equation-layout"><span>&#8730;(P</span><span>x</span><span>R)</span><span>&nbsp;</span><span>V</span></div>
+                <input class="form-control inline width-auto" type="text" name="p_variable_3_5" id="p_variable_3_5" value="" size="5" placeholder="Watts" />
+                <span>x</span>
+                <input class="form-control inline width-auto" type="text" name="r_variable_3_5" id="r_variable_3_5" value="" size="5" placeholder="Ohms" />
+                <span>=</span>
+                <input class="form-control inline width-auto" type="text" name="v_variable_3_5" id="v_variable_3_5" value="" size="10" placeholder="Volts" />
+                <span><a href="#" onclick="return tubecalc.reset(['p', 'r', 'v'], '3_5');" class="btn btn-sm btn-secondary">Reset</a></span>
+            </div>
+            <div class="equation">
+                <div class="equation-layout"><span>&#8730;(P</span><span>/</span><span>R)</span><span>&nbsp;</span><span>I</span></div>
+                <input class="form-control inline width-auto" type="text" name="p_variable_3_6" id="p_variable_3_6" value="" size="5" placeholder="Watts" />
+                <span>/</span>
+                <input class="form-control inline width-auto" type="text" name="r_variable_3_6" id="r_variable_3_6" value="" size="5" placeholder="Ohms" />
+                <span>=</span>
+                <input class="form-control inline width-auto" type="text" name="i_variable_3_6" id="i_variable_3_6" value="" size="10" placeholder="Amps" />
+                <span><a href="#" onclick="return tubecalc.reset(['p', 'r', 'i'], '3_6');" class="btn btn-sm btn-secondary">Reset</a></span>
+            </div>
 <?php include 'inc/footer.phtml'; ?>

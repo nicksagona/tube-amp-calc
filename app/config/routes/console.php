@@ -21,7 +21,7 @@ return [
         'action'     => 'voltageDivider',
         'help'       => "Calculate voltage divider"
     ],
-    'power <current> <voltage>' => [
+    'power <current> <voltage> [<max>]' => [
         'controller' => 'Calc\Console\Controller\ConsoleController',
         'action'     => 'power',
         'help'       => "Calculate power in watts"

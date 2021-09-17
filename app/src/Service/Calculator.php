@@ -36,12 +36,11 @@ class Calculator
      *
      * @param  float $voltage
      * @param  float $resistance
-     * @param  int   $round
      * @return float
      */
-    public function calculateCurrent($voltage, $resistance, $round = 2)
+    public function calculateCurrent($voltage, $resistance)
     {
-        return round(($voltage / $resistance), $round);
+        return ($voltage / $resistance);
     }
 
     /**
@@ -58,6 +57,19 @@ class Calculator
     }
 
     /**
+     * Calculate dissipation
+     *
+     * @param  float $power
+     * @param  float $max
+     * @param  int   $round
+     * @return float
+     */
+    public function calculateDissipation($power, $max, $round = 2)
+    {
+        return round((($power / $max) * 100), $round);
+    }
+
+    /**
      * Calculate resistance in series
      *
      * @param  array $resistance
@@ -66,6 +78,7 @@ class Calculator
      */
     public function calculateResistanceInSeries(array $resistance, $round = 2)
     {
+        $resistance = array_map([$this, 'convertToOhms'], $resistance);
         return round(array_sum($resistance), $round);
     }
 
@@ -81,7 +94,7 @@ class Calculator
         $resistanceTotal = 0;
 
         foreach ($resistance as $r) {
-            $resistanceTotal += (1 / $r);
+            $resistanceTotal += (1 / $this->convertToOhms($r));
         }
 
         return round(1 / $resistanceTotal, $round);
@@ -91,30 +104,31 @@ class Calculator
      * Calculate capacitance in series
      *
      * @param  array $capacitance
-     * @param  int   $round
      * @return float
      */
-    public function calculateCapacitanceInSeries(array $capacitance, $round = 2)
+    public function calculateCapacitanceInSeries(array $capacitance)
     {
         $capacitanceTotal = 0;
 
         foreach ($capacitance as $c) {
-            $capacitanceTotal += (1 / $c);
+            $capacitanceTotal += (1 / $this->convertToFarads($c));
         }
 
-        return round(1 / $capacitanceTotal, $round);
+
+
+        return sprintf('%f', (1 / $capacitanceTotal));
     }
 
     /**
      * Calculate capacitance in parallel
      *
      * @param  array $capacitance
-     * @param  int   $round
      * @return float
      */
-    public function calculateCapacitanceInParallel(array $capacitance, $round = 2)
+    public function calculateCapacitanceInParallel(array $capacitance)
     {
-        return round(array_sum($capacitance), $round);
+        $capacitance = array_map([$this, 'convertToFarads'], $capacitance);
+        return sprintf('%f', array_sum($capacitance));
     }
 
     /**
@@ -176,12 +190,139 @@ class Calculator
 
             $conversion[] = [
                 'micro' => $microFaradValue . 'uF',
-                'nano'  => ($microFarad * 1000) . 'nF',
-                'pico'  => ($microFarad * 1000000) . 'pF'
+                'nano'  => $this->convertToNanofarads($microFaradValue . 'uF') . 'nF',
+                'pico'  => $this->convertToPicofarads($microFaradValue . 'uF') . 'pF'
             ];
         }
 
         return $conversion;
+    }
+
+    /**
+     * Convert string value to ohms
+     *
+     * @param  string $resistance
+     * @return float
+     */
+    public function convertToOhms($resistance)
+    {
+        if (substr(strtolower($resistance), -1) == 'k') {
+            $resistance = substr($resistance, 0, -1) * 1000;
+        } else if (substr(strtolower($resistance), -1) == 'm') {
+            $resistance = substr($resistance, 0, -1) * 1000000;
+        } else if (substr(strtolower($resistance), -1) == 'g') {
+            $resistance = substr($resistance, 0, -1) * 1000000000;
+        }
+
+        return $resistance;
+    }
+
+    /**
+     * Convert string value to farads
+     *
+     * @param  string $capacitance
+     * @return float
+     */
+    public function convertToFarads($capacitance)
+    {
+        if (substr(strtolower($capacitance), -2) == 'pf') {
+            $capacitance = substr($capacitance, 0, -2) / 1000000000000;
+        } else if (substr(strtolower($capacitance), -2) == 'nf') {
+            $capacitance = substr($capacitance, 0, -2) / 1000000000;
+        } else if (substr(strtolower($capacitance), -2) == 'uf') {
+            $capacitance = substr($capacitance, 0, -2) / 1000000;
+        } else if (substr(strtolower($capacitance), -1) == 'f') {
+            $capacitance = substr($capacitance, 0, -1);
+        }
+
+        return $capacitance;
+    }
+
+    /**
+     * Convert string value to uF
+     *
+     * @param  string $capacitance
+     * @return float
+     */
+    public function convertToMicrofarads($capacitance)
+    {
+        if (substr(strtolower($capacitance), -2) == 'pf') {
+            $capacitance = substr($capacitance, 0, -2) / 1000000;
+        } else if (substr(strtolower($capacitance), -2) == 'nf') {
+            $capacitance = substr($capacitance, 0, -2) / 1000;
+        } else if (substr(strtolower($capacitance), -1) == 'f') {
+            $capacitance = substr($capacitance, 0, -1) * 1000000;
+        }
+
+        return $capacitance;
+    }
+
+    /**
+     * Convert string value to nF
+     *
+     * @param  string $capacitance
+     * @return float
+     */
+    public function convertToNanofarads($capacitance)
+    {
+        if (substr(strtolower($capacitance), -2) == 'pf') {
+            $capacitance = substr($capacitance, 0, -2) / 1000;
+        } else if (substr(strtolower($capacitance), -2) == 'uf') {
+            $capacitance = substr($capacitance, 0, -2) * 1000;
+        } else if (substr(strtolower($capacitance), -1) == 'f') {
+            $capacitance = substr($capacitance, 0, -1) * 1000000000;
+        }
+
+        return $capacitance;
+    }
+
+    /**
+     * Convert string value to pF
+     *
+     * @param  string $capacitance
+     * @return float
+     */
+    public function convertToPicofarads($capacitance)
+    {
+        if (substr(strtolower($capacitance), -2) == 'nf') {
+            $capacitance = substr($capacitance, 0, -2) * 1000;
+        } else if (substr(strtolower($capacitance), -2) == 'uf') {
+            $capacitance = substr($capacitance, 0, -2) * 1000000;
+        } else if (substr(strtolower($capacitance), -1) == 'f') {
+            $capacitance = substr($capacitance, 0, -1) * 1000000000000;
+        }
+
+        return $capacitance;
+    }
+
+    /**
+     * Convert string value to amps
+     *
+     * @param  string $current
+     * @return float
+     */
+    public function convertToAmps($current)
+    {
+        if (substr(strtolower($current), -2) == 'ma') {
+            $current = substr($current, 0, -2) / 1000;
+        }
+
+        return $current;
+    }
+
+    /**
+     * Convert string value to amps
+     *
+     * @param  string $current
+     * @return float
+     */
+    public function convertToMilliamps($current)
+    {
+        if (substr(strtolower($current), -1) == 'a') {
+            $current = substr($current, 0, -2);
+        }
+
+        return ($current * 1000);
     }
 
 }

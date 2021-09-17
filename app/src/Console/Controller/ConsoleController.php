@@ -57,6 +57,19 @@ class ConsoleController extends AbstractController
     }
 
     /**
+     * Print title to screen
+     *
+     * @param  string $title
+     * @return void
+     */
+    public function printTitle($title)
+    {
+        $this->console->append($title);
+        $this->console->append(str_repeat('-', strlen($title)));
+        $this->console->append();
+    }
+
+    /**
      * Version command
      *
      * @return void
@@ -83,13 +96,23 @@ class ConsoleController extends AbstractController
      */
     public function convert()
     {
+        $this->printTitle("Capacitance Conversion Chart:");
+
+        $this->console->write("Microfarads (uF) | Nanofarads (nF) | Picofarads (pF)");
+        $this->console->write("----------------------------------------------------");
+
         $calculator = new Calculator();
         $farads     = $calculator->getFaradConversion();
 
         foreach ($farads as $farad) {
-            $tab = ($farad['micro'] == '1uF') ? "\t\t" : "\t";
-            $this->console->write($farad['micro'] . $tab . $farad['nano'] . "\t" . $farad['pico']);
+            $this->console->write(
+                '| ' . $farad['micro'] . str_repeat(' ', 14 - strlen($farad['micro'])) . ' | ' .
+                $farad['nano'] . str_repeat(' ', 15 - strlen($farad['nano'])) . ' | ' .
+                $farad['pico'] . str_repeat(' ', 14 - strlen($farad['pico'])) . '|'
+            );
         }
+
+        $this->console->write("----------------------------------------------------");
     }
 
     /**
@@ -101,8 +124,11 @@ class ConsoleController extends AbstractController
      */
     public function voltage($current, $resistance)
     {
+        $this->printTitle("Ohm's Law:");
+
         $calculator = new Calculator();
-        $this->console->write($calculator->calculateVoltage($current, $resistance) . ' Volts');
+        $volts      = $calculator->calculateVoltage($calculator->convertToAmps($current), $calculator->convertToOhms($resistance));
+        $this->console->write($volts . ' Volts');
     }
 
     /**
@@ -114,8 +140,11 @@ class ConsoleController extends AbstractController
      */
     public function resistance($voltage, $current)
     {
+        $this->printTitle("Ohm's Law:");
+
         $calculator = new Calculator();
-        $this->console->write($calculator->calculateResistance($voltage, $current) . ' Ohms');
+        $ohms       = $calculator->calculateResistance($voltage, $calculator->convertToAmps($current));
+        $this->console->write($ohms . ' Ohms');
     }
 
     /**
@@ -127,8 +156,18 @@ class ConsoleController extends AbstractController
      */
     public function current($voltage, $resistance)
     {
+        $this->printTitle("Ohm's Law:");
+
         $calculator = new Calculator();
-        $this->console->write($calculator->calculateCurrent($voltage, $resistance) . ' Amps');
+        $amps       = $calculator->calculateCurrent($voltage, $calculator->convertToOhms($resistance));
+
+        if ($amps < 1) {
+            $amps .= ' Amps (' . $calculator->convertToMilliamps($amps) . 'mA)';
+        } else {
+            $amps .= ' Amps';
+        }
+
+        $this->console->write($amps);
     }
 
     /**
@@ -141,8 +180,13 @@ class ConsoleController extends AbstractController
      */
     public function voltageDivider($voltageIn, $resistance1, $resistance2)
     {
+        $this->printTitle("Voltage Divider");
+
         $calculator = new Calculator();
-        $result     = $calculator->calculateVoltageDivider($voltageIn, $resistance1, $resistance2);
+        $result     = $calculator->calculateVoltageDivider(
+            $voltageIn, $calculator->convertToOhms($resistance1), $calculator->convertToOhms($resistance2)
+        )
+;
         $this->console->write('V(in):  ' . $voltageIn . ' Volts');
         $this->console->write('V(out): ' . $result['voltage_out'] . ' Volts');
         $this->console->write('dB:     ' . $result['db_reduction'] . ' dB');
@@ -153,12 +197,24 @@ class ConsoleController extends AbstractController
      *
      * @param  float $current
      * @param  float $voltage
+     * @param  float $max
      * @return void
      */
-    public function power($current, $voltage)
+    public function power($current, $voltage, $max = null)
     {
+        $this->printTitle("Power:");
+
         $calculator = new Calculator();
-        $this->console->write($calculator->calculatePower($current, $voltage) . ' Watts');
+        $power      = $calculator->calculatePower($calculator->convertToAmps($current), $voltage);
+
+        if (null !== $max) {
+            $dissipation = $calculator->calculateDissipation($power, $max);
+            $power      .= ' Watts (' . $dissipation . '% dissipation)';
+        } else {
+            $power .= ' Watts';
+        }
+
+        $this->console->write($power);
     }
 
     /**
@@ -170,16 +226,11 @@ class ConsoleController extends AbstractController
      */
     public function frequency($resistance, $capacitance)
     {
-        if (substr(strtolower($capacitance), -2) == 'pf') {
-            $capacitance = substr($capacitance, 0, -2) / 1000000000000;
-        } else if (substr(strtolower($capacitance), -2) == 'nf') {
-            $capacitance = substr($capacitance, 0, -2) / 1000000000;
-        } else if (substr(strtolower($capacitance), -2) == 'uf') {
-            $capacitance = substr($capacitance, 0, -2) / 1000000;
-        }
+        $this->printTitle("RC Filter:");
 
         $calculator = new Calculator();
-        $this->console->write($calculator->calculateRcFilter($resistance, $capacitance) . ' Hz');
+        $frequency  = $calculator->calculateRcFilter($calculator->convertToOhms($resistance), $calculator->convertToFarads($capacitance));
+        $this->console->write($frequency . ' Hz');
     }
 
     /**
@@ -190,17 +241,20 @@ class ConsoleController extends AbstractController
      */
     public function ohms(array $options = [])
     {
+        $title      = 'Resistance';
         $calculator = new Calculator();
 
         if (isset($options['s'])) {
-            $resistance =
-                $calculator->calculateResistanceInSeries($options['ohms']);
+            $title      .= ' (in Series)';
+            $resistance  = $calculator->calculateResistanceInSeries($options['ohms']);
         } else if (isset($options['p'])) {
-            $resistance = $calculator->calculateResistanceInParallel($options['ohms']);
+            $title      .= ' (in Parallel)';
+            $resistance  = $calculator->calculateResistanceInParallel($options['ohms']);
         } else {
             throw new Exception('Error: You must pass a parallel [-p] or series [-s] option flag.');
         }
 
+        $this->printTitle($title);
         $this->console->write($resistance . ' Ohms');
     }
 
@@ -212,18 +266,27 @@ class ConsoleController extends AbstractController
      */
     public function farads(array $options = [])
     {
+        $title      = 'Capacitance';
         $calculator = new Calculator();
 
         if (isset($options['s'])) {
-            $capacitance =
-                $calculator->calculateCapacitanceInSeries($options['farads']);
+            $title      .= ' (in Series)';
+            $capacitance = $calculator->calculateCapacitanceInSeries($options['farads']);
         } else if (isset($options['p'])) {
+            $title      .= ' (in Parallel)';
             $capacitance = $calculator->calculateCapacitanceInParallel($options['farads']);
         } else {
             throw new Exception('Error: You must pass a parallel [-p] or series [-s] option flag.');
         }
 
-        $this->console->write($capacitance . ' Farads');
+        $capacitance .= 'F';
+
+        $uf = $calculator->convertToMicrofarads($capacitance);
+        $nf = $calculator->convertToNanofarads($capacitance);
+        $pf = $calculator->convertToPicofarads($capacitance);
+
+        $this->printTitle($title);
+        $this->console->write($capacitance . ' [' . $uf . 'uF, ' . $nf . 'nF, ' . $pf . 'pF]');
     }
 
 }

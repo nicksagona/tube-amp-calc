@@ -86,8 +86,8 @@ class Module extends \Pop\Module\Module
         }
 
         $this->application->on('app.route.pre', function() {
-            echo PHP_EOL . '    Tube Amp Calc' . PHP_EOL;
-            echo '    =============' . PHP_EOL . PHP_EOL;
+            echo PHP_EOL . '    Tube Amp Calculator' . PHP_EOL;
+            echo '    ===================' . PHP_EOL . PHP_EOL;
         }, 2);
 
         $this->application->on('app.dispatch.post', function() {

@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="none" />
 
-    <title><?=$title; ?>SonicTone Amplification</title>
+    <title><?=$title; ?> : SonicTone Amplification</title>
 
     <link type="image/png" rel="shortcut icon" href="/assets/img/sonictone-icon1-16x16.png"  />
     <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css" />
@@ -20,7 +20,37 @@
 
 <body>
 
-<div><h1><?=$title; ?></h1></div>
+<div class="container">
+    <div><h2 class="center"><?=$title; ?></h2></div>
+<?=$formOhm; ?>
+<?=$formVoltageDiv; ?>
+<?=$formPower; ?>
+<?=$formFreq; ?>
+<?=$formResistance; ?>
+<?=$formCapacitance; ?>
+</div>
+<div class="clearfix pad"></div>
+<div class="container">
+    <div><h3 class="center">Capacitance Conversion Chart:</h3></div>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th class="center">Microfarads (uF)</th>
+                <th class="center">Nanofarads (nF)</th>
+                <th class="center">Picofarads (pF)</th>
+            </tr>
+        </thead>
+        <tbody>
+<?php foreach ($farads as $faradValue): ?>
+            <tr>
+                <td><?=$faradValue['micro']; ?></td>
+                <td><?=$faradValue['nano']; ?></td>
+                <td><?=$faradValue['pico']; ?></td>
+            </tr>
+<?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 
 <script src="/assets/js/jquery-3.5.1.min.js"></script>
 <script src="/assets/js/popper.min.js"></script>

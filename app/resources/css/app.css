@@ -8,14 +8,33 @@
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-    margin: 0;
-    padding: 0;
+    margin: 1%;
+    padding: 1%;
 }
 
 body {
-    margin: 0;
-    padding: 0;
+    margin: 1%;
+    padding: 1%;
     font-size: 0.9em;
     font-family: "Open Sans", sans-serif !important;
     color: #4a4a4a;
+}
+
+h2, h3, legend {
+    font-weight: bold;
+}
+
+.center {
+    text-align: center;
+}
+
+.pad {
+    margin: 25px 0 25px 0;
+    padding: 25px 0 25px 0;
+}
+
+.pop-form {
+    border-top: solid 1px #ccc;
+    margin: 25px 0 25px 0;
+    padding: 25px 0 25px 0;
 }

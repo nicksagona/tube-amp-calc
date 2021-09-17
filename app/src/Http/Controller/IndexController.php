@@ -2,6 +2,8 @@
 
 namespace Calc\Http\Controller;
 
+use Calc\Form;
+use Calc\Service;
 use Pop\Application;
 use Pop\Http\Server\Request;
 use Pop\Http\Server\Response;
@@ -172,8 +174,19 @@ class IndexController extends AbstractController
      */
     public function index()
     {
+        $calculator = new Service\Calculator();
+
         $this->prepareView('index.phtml');
         $this->view->title = 'Tube Amp Calculator';
+
+        $this->view->formOhm         = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['ohms']);
+        $this->view->formVoltageDiv  = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['voltage-div']);
+        $this->view->formPower       = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['power']);
+        $this->view->formFreq        = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['freq']);
+        $this->view->formResistance  = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['resistance']);
+        $this->view->formCapacitance = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['capacitance']);
+        $this->view->farads = $calculator->getFaradConversion();
+
         $this->send();
     }
 

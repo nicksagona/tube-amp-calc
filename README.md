@@ -1,2 +1,3 @@
-# tube-amp-calc
-Tube Amp Common Equations
+# Tube Amp Calculator
+
+Common Equations for Tube Amp and General Audio

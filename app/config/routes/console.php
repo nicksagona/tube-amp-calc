@@ -6,6 +6,16 @@ return [
         'action'     => 'voltage',
         'help'       => "Calculate voltage from Ohm's law"
     ],
+    'resistance <voltage> <current>' => [
+        'controller' => 'Calc\Console\Controller\ConsoleController',
+        'action'     => 'resistance',
+        'help'       => "Calculate resistance from Ohm's law"
+    ],
+    'current <voltage> <resistance>' => [
+        'controller' => 'Calc\Console\Controller\ConsoleController',
+        'action'     => 'current',
+        'help'       => "Calculate current from Ohm's law"
+    ],
     'voltage-div <voltageIn> <resistance1> <resistance2>' => [
         'controller' => 'Calc\Console\Controller\ConsoleController',
         'action'     => 'voltageDivider',
@@ -16,20 +26,25 @@ return [
         'action'     => 'power',
         'help'       => "Calculate power in watts"
     ],
+    'freq <resistance> <capacitance>' => [
+        'controller' => 'Calc\Console\Controller\ConsoleController',
+        'action'     => 'frequency',
+        'help'       => "Calculate cutoff frequency for an RC filter"
+    ],
     'ohms [-p] [-s] [-o|--ohms=*]' => [
         'controller' => 'Calc\Console\Controller\ConsoleController',
-        'action'     => 'resistance',
+        'action'     => 'ohms',
         'help'       => "Calculate resistance in parallel or series"
     ],
     'farads [-p] [-s] [-f|--farads=*]' => [
         'controller' => 'Calc\Console\Controller\ConsoleController',
-        'action'     => 'capacitance',
-        'help'       => "Calculate capacitance in parallel or series"
+        'action'     => 'farads',
+        'help'       => "Calculate capacitance in parallel or series" . PHP_EOL
     ],
-    'freq <resistance> <capacitance>' => [
+    'convert' => [
         'controller' => 'Calc\Console\Controller\ConsoleController',
-        'action'     => 'frequency',
-        'help'       => "Calculate cutoff frequency for an RC filter" . PHP_EOL
+        'action'     => 'convert',
+        'help'       => "Display farad conversion chart" . PHP_EOL
     ],
     'help' => [
         'controller' => 'Calc\Console\Controller\ConsoleController',

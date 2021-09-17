@@ -77,6 +77,22 @@ class ConsoleController extends AbstractController
     }
 
     /**
+     * Convert command
+     *
+     * @return void
+     */
+    public function convert()
+    {
+        $calculator = new Calculator();
+        $farads     = $calculator->getFaradConversion();
+
+        foreach ($farads as $farad) {
+            $tab = ($farad['micro'] == '1uF') ? "\t\t" : "\t";
+            $this->console->write($farad['micro'] . $tab . $farad['nano'] . "\t" . $farad['pico']);
+        }
+    }
+
+    /**
      * Voltage command
      *
      * @param  float $current
@@ -87,6 +103,32 @@ class ConsoleController extends AbstractController
     {
         $calculator = new Calculator();
         $this->console->write($calculator->calculateVoltage($current, $resistance) . ' Volts');
+    }
+
+    /**
+     * Resistance command
+     *
+     * @param  float $voltage
+     * @param  float $current
+     * @return void
+     */
+    public function resistance($voltage, $current)
+    {
+        $calculator = new Calculator();
+        $this->console->write($calculator->calculateResistance($voltage, $current) . ' Ohms');
+    }
+
+    /**
+     * Current command
+     *
+     * @param  float $voltage
+     * @param  float $resistance
+     * @return void
+     */
+    public function current($voltage, $resistance)
+    {
+        $calculator = new Calculator();
+        $this->console->write($calculator->calculateCurrent($voltage, $resistance) . ' Amps');
     }
 
     /**
@@ -120,12 +162,33 @@ class ConsoleController extends AbstractController
     }
 
     /**
+     * Frequency command
+     *
+     * @param  float $resistance
+     * @param  float $capacitance
+     * @return void
+     */
+    public function frequency($resistance, $capacitance)
+    {
+        if (substr(strtolower($capacitance), -2) == 'pf') {
+            $capacitance = substr($capacitance, 0, -2) / 1000000000000;
+        } else if (substr(strtolower($capacitance), -2) == 'nf') {
+            $capacitance = substr($capacitance, 0, -2) / 1000000000;
+        } else if (substr(strtolower($capacitance), -2) == 'uf') {
+            $capacitance = substr($capacitance, 0, -2) / 1000000;
+        }
+
+        $calculator = new Calculator();
+        $this->console->write($calculator->calculateRcFilter($resistance, $capacitance) . ' Hz');
+    }
+
+    /**
      * Resistance command
      *
      * @param  array $options
      * @return void
      */
-    public function resistance(array $options = [])
+    public function ohms(array $options = [])
     {
         $calculator = new Calculator();
 
@@ -147,7 +210,7 @@ class ConsoleController extends AbstractController
      * @param  array $options
      * @return void
      */
-    public function capacitance(array $options = [])
+    public function farads(array $options = [])
     {
         $calculator = new Calculator();
 
@@ -161,27 +224,6 @@ class ConsoleController extends AbstractController
         }
 
         $this->console->write($capacitance . ' Farads');
-    }
-
-    /**
-     * Frequency command
-     *
-     * @param  float $resistance
-     * @param  float $capacitance
-     * @return void
-     */
-    public function frequency($resistance, $capacitance)
-    {
-        if (substr(strtolower($capacitance), -2) == 'pf') {
-            $capacitance = substr($capacitance, 0, -2) / 1000000000000;
-        } else if (substr(strtolower($capacitance), -2) == 'nf') {
-            $capacitance = substr($capacitance, 0, -2) / 1000000000;
-        } else if (substr(strtolower($capacitance), -2) == 'uf') {
-            $capacitance = substr($capacitance, 0, -2) / 1000000;
-        }
-
-        $calculator = new Calculator();
-        $this->console->write($calculator->calculateRcFilter($resistance, $capacitance) . ' Hz');
     }
 
 }

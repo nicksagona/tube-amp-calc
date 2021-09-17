@@ -6,7 +6,7 @@ class Calculator
 {
 
     /**
-     * Calculate voltage
+     * Calculate voltage from Ohm's law
      *
      * @param  float $current
      * @param  float $resistance
@@ -16,6 +16,32 @@ class Calculator
     public function calculateVoltage($current, $resistance, $round = 2)
     {
         return round(($current * $resistance), $round);
+    }
+
+    /**
+     * Calculate resistance from Ohm's law
+     *
+     * @param  float $voltage
+     * @param  float $current
+     * @param  int   $round
+     * @return float
+     */
+    public function calculateResistance($voltage, $current, $round = 2)
+    {
+        return round(($voltage / $current), $round);
+    }
+
+    /**
+     * Calculate current from Ohm's law
+     *
+     * @param  float $voltage
+     * @param  float $resistance
+     * @param  int   $round
+     * @return float
+     */
+    public function calculateCurrent($voltage, $resistance, $round = 2)
+    {
+        return round(($voltage / $resistance), $round);
     }
 
     /**
@@ -123,6 +149,39 @@ class Calculator
     {
         $frequencyCutoff = 1 / (2 * pi() * $resistance * $capacitance);
         return round($frequencyCutoff, $round);
+    }
+
+    /**
+     * Get farad conversion values
+     *
+     * @return array
+     */
+    public function getFaradConversion()
+    {
+        $conversion  = [];
+        $microFarads = [
+            1, 0.68, 0.47, 0.33, 0.22, 0.1,
+            0.068, 0.047, 0.033, 0.022, 0.01,
+            0.0068, 0.0047, 0.0033, 0.0022, 0.001,
+            0.00068, 0.00047, 0.00033, 0.00022, 0.0001,
+            0.000068, 0.000047, 0.000033, 0.000022, 0.00001
+        ];
+
+        foreach ($microFarads as $microFarad) {
+            if ($microFarad < 0.0001) {
+                $microFaradValue = sprintf('%f', $microFarad);
+            } else {
+                $microFaradValue = $microFarad;
+            }
+
+            $conversion[] = [
+                'micro' => $microFaradValue . 'uF',
+                'nano'  => ($microFarad * 1000) . 'nF',
+                'pico'  => ($microFarad * 1000000) . 'pF'
+            ];
+        }
+
+        return $conversion;
     }
 
 }

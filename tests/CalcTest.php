@@ -1,16 +1,16 @@
 <?php
 
-namespace Nova\Auth\Test;
+namespace Calc\Test;
 
 use PHPUnit\Framework\TestCase;
 
-class AuthTest extends TestCase
+class CalcTest extends TestCase
 {
 
     public function testConstructor()
     {
-        $auth = new \Nova\Auth\Module();
-        $this->assertInstanceOf('Nova\Auth\Module', $auth);
+        $calc = new \Calc\Module();
+        $this->assertInstanceOf('Calc\Module', $calc);
     }
 
 }

@@ -1,4 +1,3 @@
-/app/config/database.php
 /app/config/api.php
 /logs
 composer.lock

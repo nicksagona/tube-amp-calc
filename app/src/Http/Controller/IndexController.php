@@ -6,6 +6,7 @@ use Pop\Application;
 use Pop\Http\Server\Request;
 use Pop\Http\Server\Response;
 use Pop\Controller\AbstractController;
+use Pop\View\View;
 
 class IndexController extends AbstractController
 {
@@ -27,6 +28,17 @@ class IndexController extends AbstractController
      * @var Response
      */
     protected $response = null;
+    /**
+     * View path
+     * @var string
+     */
+    protected $viewPath = null;
+
+    /**
+     * View object
+     * @var View
+     */
+    protected $view = null;
 
     /**
      * Constructor for the controller
@@ -40,6 +52,7 @@ class IndexController extends AbstractController
         $this->application = $application;
         $this->request     = $request;
         $this->response    = $response;
+        $this->viewPath    = __DIR__ . '/../../../view';
     }
 
     /**
@@ -87,6 +100,17 @@ class IndexController extends AbstractController
     }
 
     /**
+     * Prepare view
+     *
+     * @param  string $template
+     * @return void
+     */
+    protected function prepareView($template)
+    {
+        $this->view = new View($this->viewPath . '/' . $template);
+    }
+
+    /**
      * Send response
      *
      * @param  int    $code
@@ -105,7 +129,11 @@ class IndexController extends AbstractController
             $this->response->setMessage($message);
         }
 
-        $this->response->setBody($body);
+        if (null !== $body) {
+            $this->response->setBody($body);
+        } else if (null !== $this->view) {
+            $this->response->setBody($this->view->render());
+        }
 
         $this->application->trigger('app.send.post', ['controller' => $this]);
         $this->response->send(null, $headers);
@@ -128,8 +156,11 @@ class IndexController extends AbstractController
             $this->response->setMessage($message);
         }
 
+        $this->prepareView('error.phtml');
+        $this->view->title = 'Tube Amp Calculator';
+
         $this->response->setCode($code)
-            ->setBody($body);
+            ->setBody($this->view->render());
 
         $this->response->sendAndExit(null, $headers);
     }
@@ -141,7 +172,9 @@ class IndexController extends AbstractController
      */
     public function index()
     {
-        $this->send(200, '<html><head><title>Tube Amp Calc</title></head><body><h1>Tube Amp Calc</h1></body></html>');
+        $this->prepareView('index.phtml');
+        $this->view->title = 'Tube Amp Calculator';
+        $this->send();
     }
 
 }

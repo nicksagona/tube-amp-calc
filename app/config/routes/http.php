@@ -6,7 +6,7 @@ return [
         'action'     => 'index'
     ],
     '*' => [
-        'controller' => 'Calc\Auth\Http\Controller\IndexController',
+        'controller' => 'Calc\Http\Controller\IndexController',
         'action'     => 'error'
     ]
 ];

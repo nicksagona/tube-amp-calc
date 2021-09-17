@@ -1,0 +1,21 @@
+/**
+ * app.css
+ */
+
+@import url('//fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic');
+@import url('//fonts.googleapis.com/css?family=Montserrat:400,400italic,700,700italic');
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 0.9em;
+    font-family: "Open Sans", sans-serif !important;
+    color: #4a4a4a;
+}

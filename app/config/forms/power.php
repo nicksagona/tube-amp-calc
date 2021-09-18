@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>Power <span class="small">[P = I x V]</span>' => [
+    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>Power<br /><span class="small">[P = I x V]</span>' => [
         'current_power'   => [
             'type'  => 'text',
             'label' => 'Current (I)',

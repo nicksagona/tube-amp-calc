@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>RC Filter <span class="small">[1 / 2&Pi;RC]</span>' => [
+    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>RC Filter<br /><span class="small">[1 / 2&Pi;RC]</span>' => [
         'resistance_filter'   => [
             'type'  => 'text',
             'label' => 'Resistance (R)',

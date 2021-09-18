@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>Voltage Divider' => [
+    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>Voltage Divider <span class="small">[V<sub>(out)</sub> = V<sub>(in)</sub> x (R<sub>2</sub> / (R<sub>1</sub> + R<sub>2</sub>))]</span>' => [
         'voltage'   => [
             'type'  => 'text',
             'label' => 'V<sub>(in)</sub>',
@@ -11,14 +11,14 @@ return [
         ],
         'resistance1'   => [
             'type'  => 'text',
-            'label' => 'Resistance 1',
+            'label' => 'Resistance 1 (R<sub>1</sub>)',
             'attributes' => [
                 'class' => 'form-control'
             ]
         ],
         'resistance2'   => [
             'type'  => 'text',
-            'label' => 'Resistance 2',
+            'label' => 'Resistance 2 (R<sub>2</sub>)',
             'attributes' => [
                 'class' => 'form-control'
             ]

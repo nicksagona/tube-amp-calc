@@ -1,24 +1,24 @@
 <?php
 
 return [
-    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>Power' => [
+    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>Power <span class="small">[P = I x V]</span>' => [
         'current'   => [
             'type'  => 'text',
-            'label' => 'Current',
+            'label' => 'Current (I)',
             'attributes' => [
                 'class' => 'form-control'
             ]
         ],
         'voltage'   => [
             'type'  => 'text',
-            'label' => 'Voltage',
+            'label' => 'Voltage (V)',
             'attributes' => [
                 'class' => 'form-control'
             ]
         ],
         'max'   => [
             'type'  => 'text',
-            'label' => 'Max Dissipation',
+            'label' => 'Max Dissipation (W) <em class="small light">[Optional]</em>',
             'attributes' => [
                 'class' => 'form-control'
             ]

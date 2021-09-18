@@ -147,7 +147,7 @@ $(document).ready(function(){
                             if (json.power != undefined) {
                                 var html = json.power + ' Watts';
                                 if (json.dissipation != undefined) {
-                                    html = html + ' (' + json.dissipation + '% dissipation)';
+                                    html = html + '<br /><span class="small">(' + json.dissipation + '% dissipation)</span>';
                                 }
                                 $('#answer-power-box')[0].innerHTML = '<h4>' + html + '</h4>';
                                 $('#answer-power-box').fadeIn();
@@ -258,7 +258,7 @@ $(document).ready(function(){
                             console.log(json);
                             $('#answer-capacitance-box').hide();
                             if (json.capacitance != undefined) {
-                                $('#answer-capacitance-box')[0].innerHTML = '<h4>' + json.capacitance.F + ' <span class="small">[' + json.capacitance.uF + 'uF, ' + json.capacitance.nF + 'nF, ' + json.capacitance.pF + 'pF]</span></h4>';
+                                $('#answer-capacitance-box')[0].innerHTML = '<h4>' + json.capacitance.F + '<br /><span class="small">[' + json.capacitance.uF + 'uF, ' + json.capacitance.nF + 'nF, ' + json.capacitance.pF + 'pF]</span></h4>';
                                 $('#answer-capacitance-box').fadeIn();
                             }
                         }

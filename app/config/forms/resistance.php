@@ -1,7 +1,7 @@
 <?php
 
 return [
-    "Resistance" => [
+    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>Resistance' => [
         'resistance_values'   => [
             'type'  => 'text',
             'label' => 'Resistance Values (comma-separated)',

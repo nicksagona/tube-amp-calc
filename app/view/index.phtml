@@ -21,17 +21,53 @@
 <body>
 
 <div class="container">
-    <div><h2 class="center"><?=$title; ?></h2></div>
+    <h2 class="center"><?=$title; ?></h2>
+    <ul class="nav nav-pills nav-fill" id="nav">
+        <li class="nav-item">
+            <a class="nav-link active" href="#ohms-law">Ohm's Law</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#voltage-div">Voltage Divider</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#power">Power</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#rc-filter">RC Filter</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#resistance-calc">Resistance</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#capacitance-calc">Capacitance</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#capacitance-chart">Chart</a>
+        </li>
+    </ul>
+    <a name="ohms-law"></a>
 <?=$formOhm; ?>
+    <div class="container answer" id="answer-ohm"><div id="answer-ohm-box" class="answer-box alert alert-success"></div></div>
+    <a name="voltage-div"></a>
 <?=$formVoltageDiv; ?>
+    <div class="container answer" id="answer-voltage-div"></div>
+    <a name="power"></a>
 <?=$formPower; ?>
+    <div class="container answer" id="answer-power"></div>
+    <a name="rc-filter"></a>
 <?=$formFreq; ?>
+    <div class="container answer" id="answer-freq"></div>
+    <a name="resistance-calc"></a>
 <?=$formResistance; ?>
+    <div class="container answer" id="answer-resistance"></div>
+    <a name="capacitance-calc"></a>
 <?=$formCapacitance; ?>
+    <div class="container answer" id="answer-capacitance"></div>
 </div>
 <div class="clearfix pad"></div>
 <div class="container">
-    <div><h3 class="center">Capacitance Conversion Chart:</h3></div>
+    <a name="capacitance-chart"></a>
+    <div><a href="#top" class="float-right small">Top</a><h3 class="center">Capacitance Conversion Chart:</h3></div>
     <table class="table">
         <thead class="thead-dark">
             <tr>

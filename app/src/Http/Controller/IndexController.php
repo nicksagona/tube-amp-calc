@@ -185,9 +185,47 @@ class IndexController extends AbstractController
         $this->view->formFreq        = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['freq']);
         $this->view->formResistance  = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['resistance']);
         $this->view->formCapacitance = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['capacitance']);
+
+        $this->view->formOhm->setAttributes(['id' => 'ohms-form']);
+        $this->view->formVoltageDiv->setAttributes(['id' => 'voltage-form']);
+        $this->view->formPower->setAttributes(['id' => 'power-form']);
+        $this->view->formFreq->setAttributes(['id' => 'freq-form']);
+        $this->view->formResistance->setAttributes(['id' => 'res-form']);
+        $this->view->formCapacitance->setAttributes(['id' => 'cap-form']);
+
         $this->view->farads = $calculator->getFaradConversion();
 
         $this->send();
+    }
+
+    /**
+     * Process action method
+     *
+     * @return void
+     */
+    public function process()
+    {
+        if ($this->request->isPost()) {
+            $post       = $this->request->getPost();
+            $results    = [];
+            $calculator = new Service\Calculator();
+
+            switch ($post['type']) {
+                case 'ohms':
+                    if (!empty($post['current']) && !empty($post['resistance'])) {
+                        $results = ['voltage' => $calculator->calculateVoltage($post['current'], $post['resistance'])];
+                    } else if (!empty($post['voltage']) && !empty($post['resistance'])) {
+                        $results = ['current' => $calculator->calculateCurrent($post['voltage'], $post['resistance'])];
+                    } else if (!empty($post['voltage']) && !empty($post['current'])) {
+                        $results = ['resistance' => $calculator->calculateResistance($post['voltage'], $post['current'])];
+                    }
+                    break;
+            }
+
+            $this->send(200, json_encode($results, JSON_PRETTY_PRINT), 'OK', ['Content-Type' => 'application/json']);
+        } else {
+            $this->send(404, json_encode(['error' => 'Page not found'], JSON_PRETTY_PRINT), null, ['Content-Type' => 'application/json']);
+        }
     }
 
 }

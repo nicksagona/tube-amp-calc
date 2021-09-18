@@ -1,7 +1,7 @@
 <?php
 
 return [
-    "Capacitance" => [
+    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>Capacitance' => [
         'capacitance_values'   => [
             'type'  => 'text',
             'label' => 'Capacitance Values (comma-separated)',

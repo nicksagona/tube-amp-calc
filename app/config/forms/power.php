@@ -1,7 +1,7 @@
 <?php
 
 return [
-    "Power" => [
+    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>Power' => [
         'current'   => [
             'type'  => 'text',
             'label' => 'Current',

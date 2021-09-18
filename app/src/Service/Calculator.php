@@ -15,7 +15,7 @@ class Calculator
      */
     public function calculateVoltage($current, $resistance, $round = 2)
     {
-        return round(($current * $resistance), $round);
+        return round(($this->convertToAmps($current) * $this->convertToOhms($resistance)), $round);
     }
 
     /**
@@ -28,7 +28,7 @@ class Calculator
      */
     public function calculateResistance($voltage, $current, $round = 2)
     {
-        return round(($voltage / $current), $round);
+        return round(($voltage / $this->convertToAmps($current)), $round);
     }
 
     /**
@@ -40,7 +40,7 @@ class Calculator
      */
     public function calculateCurrent($voltage, $resistance)
     {
-        return ($voltage / $resistance);
+        return ($voltage / $this->convertToOhms($resistance));
     }
 
     /**

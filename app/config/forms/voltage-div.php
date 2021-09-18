@@ -1,7 +1,7 @@
 <?php
 
 return [
-    "Voltage Divider" => [
+    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>Voltage Divider' => [
         'voltage'   => [
             'type'  => 'text',
             'label' => 'V<sub>(in)</sub>',

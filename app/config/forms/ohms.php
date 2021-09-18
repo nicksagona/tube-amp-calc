@@ -1,7 +1,7 @@
 <?php
 
 return [
-    "Ohm's Law" => [
+    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>Ohm\'s Law' => [
         'current'   => [
             'type'  => 'text',
             'label' => 'Current',

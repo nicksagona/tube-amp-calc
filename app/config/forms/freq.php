@@ -1,7 +1,7 @@
 <?php
 
 return [
-    "RC Filter" => [
+    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>RC Filter' => [
         'resistance'   => [
             'type'  => 'text',
             'label' => 'Resistance',

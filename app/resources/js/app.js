@@ -61,16 +61,15 @@ $(document).ready(function(){
                     "complete" : function (xhr) {
                         if (xhr.responseJSON != undefined) {
                             var json = xhr.responseJSON;
-                            console.log(json);
                             $('#answer-ohm-box').hide();
                             if (json.voltage != undefined) {
-                                $('#answer-ohm-box')[0].innerHTML = '<h4>' + json.voltage + ' Volts</h4>';
+                                $('#answer-ohm-box')[0].innerHTML = '<h4>V = ' + json.voltage + ' Volts</h4>';
                                 $('#answer-ohm-box').fadeIn();
                             } else if (json.current != undefined) {
-                                $('#answer-ohm-box')[0].innerHTML = '<h4>' + json.current + ' Amps</h4>';
+                                $('#answer-ohm-box')[0].innerHTML = '<h4>I = ' + json.current + ' Amps</h4>';
                                 $('#answer-ohm-box').fadeIn();
                             } else if (json.resistance != undefined) {
-                                $('#answer-ohm-box')[0].innerHTML = '<h4>' + json.resistance + ' Ohms</h4>';
+                                $('#answer-ohm-box')[0].innerHTML = '<h4>R = ' + json.resistance + ' Ohms</h4>';
                                 $('#answer-ohm-box').fadeIn();
                             }
                         }
@@ -83,27 +82,191 @@ $(document).ready(function(){
     });
 
     $('#voltage-form').submit(function(){
-        console.log('voltage');
+        var voltageIn   = $('#voltage_in').val();
+        var resistance1 = $('#resistance1').val();
+        var resistance2 = $('#resistance2').val();
+
+        if ((voltageIn == '') || (resistance1 == '') || (resistance2 == '')) {
+            alert('You must fill out all of the variable values.');
+        } else {
+            $.ajax(
+                '/process',
+                {
+                    "method"  : "POST",
+                    "headers" : {
+                        "Accept" : "application/json"
+                    },
+                    "data" : {
+                        "type"        : "voltage-div",
+                        "voltage"     : voltageIn,
+                        "resistance1" : resistance1,
+                        "resistance2" : resistance2
+                    },
+                    "complete" : function (xhr) {
+                        if (xhr.responseJSON != undefined) {
+                            var json = xhr.responseJSON;
+                            $('#answer-voltage-div-box').hide();
+                            if ((json.voltage_out != undefined) && (json.db_reduction != undefined)) {
+                                $('#answer-voltage-div-box')[0].innerHTML = '<h4>V<sub>(out)</sub> = ' + json.voltage_out + ' Volts<br /><span class="small">(dB: ' + json.db_reduction + ')</span></h4>';
+                                $('#answer-voltage-div-box').fadeIn();
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
         return false;
     });
 
     $('#power-form').submit(function(){
-        console.log('power');
+        var current = $('#current_power').val();
+        var voltage = $('#voltage_power').val();
+        var max     = $('#max').val();
+
+        if ((current == '') || (voltage == '')) {
+            alert('You must fill out the current and voltage variable values.');
+        } else {
+            $.ajax(
+                '/process',
+                {
+                    "method"  : "POST",
+                    "headers" : {
+                        "Accept" : "application/json"
+                    },
+                    "data" : {
+                        "type"    : "power",
+                        "current" : current,
+                        "voltage" : voltage,
+                        "max"     : max
+                    },
+                    "complete" : function (xhr) {
+                        if (xhr.responseJSON != undefined) {
+                            var json = xhr.responseJSON;
+                            $('#answer-power-box').hide();
+                            if (json.power != undefined) {
+                                var html = json.power + ' Watts';
+                                if (json.dissipation != undefined) {
+                                    html = html + ' (' + json.dissipation + '% dissipation)';
+                                }
+                                $('#answer-power-box')[0].innerHTML = '<h4>' + html + '</h4>';
+                                $('#answer-power-box').fadeIn();
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
         return false;
     });
 
     $('#freq-form').submit(function(){
-        console.log('freq');
+        var resistance  = $('#resistance_filter').val();
+        var capacitance = $('#capacitance_filter').val();
+
+        if ((resistance == '') || (capacitance == '')) {
+            alert('You must fill out the current and voltage variable values.');
+        } else {
+            $.ajax(
+                '/process',
+                {
+                    "method"  : "POST",
+                    "headers" : {
+                        "Accept" : "application/json"
+                    },
+                    "data" : {
+                        "type"        : "freq",
+                        "resistance"  : resistance,
+                        "capacitance" : capacitance,
+                    },
+                    "complete" : function (xhr) {
+                        if (xhr.responseJSON != undefined) {
+                            var json = xhr.responseJSON;
+                            $('#answer-freq-box').hide();
+                            if (json.frequency != undefined) {
+                                $('#answer-freq-box')[0].innerHTML = '<h4>' + json.frequency + ' Hz</h4>';
+                                $('#answer-freq-box').fadeIn();
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
         return false;
     });
 
     $('#res-form').submit(function(){
-        console.log('res');
+        var resistanceValues  = $('#resistance_values').val();
+        var resistanceType    = $('input[name=res_type]:checked', '#res-form').val();
+
+        if (resistanceValues == '') {
+            alert('You must fill out the resistance values.');
+        } else {
+            $.ajax(
+                '/process',
+                {
+                    "method"  : "POST",
+                    "headers" : {
+                        "Accept" : "application/json"
+                    },
+                    "data" : {
+                        "type"              : "resistance",
+                        "resistance_values" : resistanceValues,
+                        "resistance_type"   : resistanceType
+                    },
+                    "complete" : function (xhr) {
+                        if (xhr.responseJSON != undefined) {
+                            var json = xhr.responseJSON;
+                            $('#answer-resistance-box').hide();
+                            if (json.resistance != undefined) {
+                                $('#answer-resistance-box')[0].innerHTML = '<h4>' + json.resistance + ' Ohms</h4>';
+                                $('#answer-resistance-box').fadeIn();
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
         return false;
     });
 
     $('#cap-form').submit(function(){
-        console.log('cap');
+        var capacitanceValues  = $('#capacitance_values').val();
+        var capacitanceType    = $('input[name=cap_type]:checked', '#cap-form').val();
+
+        if (capacitanceValues == '') {
+            alert('You must fill out the capacitance values.');
+        } else {
+            $.ajax(
+                '/process',
+                {
+                    "method"  : "POST",
+                    "headers" : {
+                        "Accept" : "application/json"
+                    },
+                    "data" : {
+                        "type"              : "capacitance",
+                        "capacitance_values" : capacitanceValues,
+                        "capacitance_type"   : capacitanceType
+                    },
+                    "complete" : function (xhr) {
+                        if (xhr.responseJSON != undefined) {
+                            var json = xhr.responseJSON;
+                            console.log(json);
+                            $('#answer-capacitance-box').hide();
+                            if (json.capacitance != undefined) {
+                                $('#answer-capacitance-box')[0].innerHTML = '<h4>' + json.capacitance.F + ' <span class="small">[' + json.capacitance.uF + 'uF, ' + json.capacitance.nF + 'nF, ' + json.capacitance.pF + 'pF]</span></h4>';
+                                $('#answer-capacitance-box').fadeIn();
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
         return false;
     });
 });

@@ -53,7 +53,7 @@ class Calculator
      */
     public function calculatePower($current, $voltage, $round = 2)
     {
-        return round(($current * $voltage), $round);
+        return round(($this->convertToAmps($current) * $voltage), $round);
     }
 
     /**
@@ -142,6 +142,8 @@ class Calculator
      */
     public function calculateVoltageDivider($voltageIn, $resistance1, $resistance2, $round = 2)
     {
+        $resistance1 = $this->convertToOhms($resistance1);
+        $resistance2 = $this->convertToOhms($resistance2);
         $voltageOut  = round(($voltageIn * ($resistance2 / ($resistance1 + $resistance2))), 2);
         $dbReduction = round((20 * log10($voltageOut / $voltageIn)), 2);
 
@@ -161,7 +163,7 @@ class Calculator
      */
     public function calculateRcFilter($resistance, $capacitance, $round = 2)
     {
-        $frequencyCutoff = 1 / (2 * pi() * $resistance * $capacitance);
+        $frequencyCutoff = 1 / (2 * pi() * $this->convertToOhms($resistance) * $this->convertToFarads($capacitance));
         return round($frequencyCutoff, $round);
     }
 

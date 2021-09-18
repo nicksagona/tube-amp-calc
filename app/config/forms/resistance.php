@@ -9,7 +9,7 @@ return [
                 'class' => 'form-control'
             ]
         ],
-        'type'   => [
+        'res_type'   => [
             'type'  => 'radio-set',
             'label' => 'Type',
             'values' => [

@@ -2,14 +2,14 @@
 
 return [
     '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>Power <span class="small">[P = I x V]</span>' => [
-        'current'   => [
+        'current_power'   => [
             'type'  => 'text',
             'label' => 'Current (I)',
             'attributes' => [
                 'class' => 'form-control'
             ]
         ],
-        'voltage'   => [
+        'voltage_power'   => [
             'type'  => 'text',
             'label' => 'Voltage (V)',
             'attributes' => [

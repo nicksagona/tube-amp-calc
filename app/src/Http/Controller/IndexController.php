@@ -220,6 +220,48 @@ class IndexController extends AbstractController
                         $results = ['resistance' => $calculator->calculateResistance($post['voltage'], $post['current'])];
                     }
                     break;
+                case 'voltage-div':
+                    $results = $calculator->calculateVoltageDivider($post['voltage'], $post['resistance1'], $post['resistance2']);
+                    break;
+                case 'power':
+                    $results = ['power' => $calculator->calculatePower($post['current'], $post['voltage'])];
+                    if (!empty($post['max'])) {
+                        $results['dissipation'] = $calculator->calculateDissipation($results['power'], $post['max']);
+                    }
+                    break;
+                case 'freq':
+                    $results = ['frequency' => $calculator->calculateRcFilter($post['resistance'], $post['capacitance'])];
+                    break;
+                case 'resistance':
+                    $resistanceValues = array_map('trim', explode(',', $post['resistance_values']));
+                    if ($post['resistance_type'] == 'Parallel') {
+                        $results = ['resistance' => $calculator->calculateResistanceInParallel($resistanceValues)];
+                    } else {
+                        $results = ['resistance' => $calculator->calculateResistanceInSeries($resistanceValues)];
+                    }
+                    break;
+                case 'capacitance':
+                    $capacitanceValues = array_map('trim', explode(',', $post['capacitance_values']));
+                    $capacitance = ($post['capacitance_type'] == 'Parallel') ?
+                        $calculator->calculateCapacitanceInParallel($capacitanceValues) :
+                        $calculator->calculateCapacitanceInSeries($capacitanceValues);
+
+                    $capacitance .= 'F';
+
+                    $uf = $calculator->convertToMicrofarads($capacitance);
+                    $nf = $calculator->convertToNanofarads($capacitance);
+                    $pf = $calculator->convertToPicofarads($capacitance);
+
+                    $results = [
+                        'capacitance' => [
+                            'F'  => $capacitance,
+                            'uF' => $uf,
+                            'nF' => $nf,
+                            'pF' => $pf
+                        ]
+                    ];
+
+                    break;
             }
 
             $this->send(200, json_encode($results, JSON_PRETTY_PRINT), 'OK', ['Content-Type' => 'application/json']);

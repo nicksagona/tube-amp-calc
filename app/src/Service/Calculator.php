@@ -114,9 +114,13 @@ class Calculator
             $capacitanceTotal += (1 / $this->convertToFarads($c));
         }
 
+        $cap = (1 / $capacitanceTotal);
 
+        if ($this->isScientificNotation($cap)) {
+            $cap = $this->convertScientificNotation($cap);
+        }
 
-        return sprintf('%f', (1 / $capacitanceTotal));
+        return $cap;
     }
 
     /**
@@ -128,7 +132,13 @@ class Calculator
     public function calculateCapacitanceInParallel(array $capacitance)
     {
         $capacitance = array_map([$this, 'convertToFarads'], $capacitance);
-        return sprintf('%f', array_sum($capacitance));
+        $capacitance = array_sum($capacitance);
+
+        if ($this->isScientificNotation($capacitance)) {
+            $capacitance = $this->convertScientificNotation($capacitance);
+        }
+
+        return $capacitance;
     }
 
     /**
@@ -325,6 +335,39 @@ class Calculator
         }
 
         return ($current * 1000);
+    }
+
+    /**
+     * Check if number is in scientific notation
+     *
+     * @param  mixed $number
+     * @return boolean
+     */
+    public function isScientificNotation($number)
+    {
+        return (is_numeric($number) && (stripos($number, 'E') !== false));
+    }
+
+    /**
+     * Convert number from scientific notation to normal notation
+     *
+     * @param  mixed $number
+     * @return mixed
+     */
+    public function convertScientificNotation($number)
+    {
+        if ((strpos($number, 'E-') !== false)) {
+            $e      = substr($number, (strpos($number, 'E-') + 2)) + 1;
+            $number = sprintf('%.' . $e . 'f', $number);
+        } else if ((strpos($number, 'E+') !== false)) {
+            $e      = substr($number, (strpos($number, 'E+') + 2));
+            $number = sprintf('%' . $e . 'f', $number);
+        } else if ((strpos($number, 'E') !== false)) {
+            $e      = substr($number, (strpos($number, 'E') + 1));
+            $number = sprintf('%' . $e . 'f', $number);
+        }
+
+        return $number;
     }
 
 }

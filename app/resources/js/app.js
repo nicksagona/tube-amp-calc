@@ -269,4 +269,45 @@ $(document).ready(function(){
 
         return false;
     });
+
+    $('#b-plus-form').submit(function(){
+        var vac       = $('#vac').val();
+        var rectifier = $('#rectifier').val();
+
+        if (vac == '') {
+            alert('You must fill out the VAC value.');
+        } else {
+            $.ajax(
+                '/process',
+                {
+                    "method"  : "POST",
+                    "headers" : {
+                        "Accept" : "application/json"
+                    },
+                    "data" : {
+                        "type"      : "b-plus",
+                        "vac"       : vac,
+                        "rectifier" : rectifier
+                    },
+                    "complete" : function (xhr) {
+                        if (xhr.responseJSON != undefined) {
+                            var json = xhr.responseJSON;
+                            $('#answer-b-plus-box').hide();
+                            if (json.upper_voltage != undefined) {
+                                if (json.lower_voltage != undefined) {
+                                    $('#answer-b-plus-box')[0].innerHTML = '<h4>' + json.lower_voltage + ' - ' + json.upper_voltage + ' Volts</h4>';
+                                } else {
+                                    $('#answer-b-plus-box')[0].innerHTML = '<h4>' + json.upper_voltage + ' Volts</h4>';
+                                }
+
+                                $('#answer-b-plus-box').fadeIn();
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        return false;
+    });
 });

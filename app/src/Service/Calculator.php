@@ -178,6 +178,53 @@ class Calculator
     }
 
     /**
+     * Calculate B+ voltage
+     *
+     * @param  int    $vac
+     * @param  string $rectifier
+     * @param  int    $round
+     * @return array
+     */
+    public function calculateBPlusVoltage($vac, $rectifier, $round = 2)
+    {
+        $upperFactor = null;
+        $lowerFactor = null;
+
+        switch ($rectifier) {
+            case 'GZ34':
+                $upperFactor = 1.3;
+                break;
+            case 'EZ81':
+                $upperFactor = 1.3;
+                $lowerFactor = 1.2;
+                break;
+            case '5U4':
+                $upperFactor = 1.2;
+                break;
+            case '5Y3':
+                $upperFactor = 1.1;
+                $lowerFactor = 1.05;
+                break;
+            case 'Silicon':
+                $upperFactor = 1.4;
+                $lowerFactor = 1.35;
+                break;
+        }
+
+        $upperVoltage = round(($vac * $upperFactor), $round);
+        $lowerVoltage = null;
+
+        if (null !== $lowerFactor) {
+            $lowerVoltage = round(($vac * $lowerFactor), $round);
+        }
+
+        return [
+            'upper_voltage' => $upperVoltage,
+            'lower_voltage' => $lowerVoltage
+        ];
+    }
+
+    /**
      * Get farad conversion values
      *
      * @return array

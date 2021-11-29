@@ -185,6 +185,7 @@ class IndexController extends AbstractController
         $this->view->formFreq        = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['freq']);
         $this->view->formResistance  = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['resistance']);
         $this->view->formCapacitance = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['capacitance']);
+        $this->view->formBPlus       = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['b-plus']);
 
         $this->view->formOhm->setAttributes(['id' => 'ohms-form']);
         $this->view->formVoltageDiv->setAttributes(['id' => 'voltage-form']);
@@ -192,6 +193,7 @@ class IndexController extends AbstractController
         $this->view->formFreq->setAttributes(['id' => 'freq-form']);
         $this->view->formResistance->setAttributes(['id' => 'res-form']);
         $this->view->formCapacitance->setAttributes(['id' => 'cap-form']);
+        $this->view->formBPlus->setAttributes(['id' => 'b-plus-form']);
 
         $this->view->farads = $calculator->getFaradConversion();
 
@@ -261,6 +263,9 @@ class IndexController extends AbstractController
                         ]
                     ];
 
+                    break;
+                case 'b-plus':
+                    $results = $calculator->calculateBPlusVoltage($post['vac'], $post['rectifier']);
                     break;
             }
 

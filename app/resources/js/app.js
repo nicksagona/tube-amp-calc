@@ -28,8 +28,14 @@ $(document).ready(function(){
                 case '#capacitance-calc':
                     $('#nav > li:nth-child(6) > a').prop('class', 'nav-link active');
                     break;
-                case '#capacitance-chart':
+                case '#b-plus-calc':
                     $('#nav > li:nth-child(7) > a').prop('class', 'nav-link active');
+                    break;
+                case '#ot-calc':
+                    $('#nav > li:nth-child(8) > a').prop('class', 'nav-link active');
+                    break;
+                case '#capacitance-chart':
+                    $('#nav > li:nth-child(9) > a').prop('class', 'nav-link active');
                     break;
             }
         }
@@ -301,6 +307,47 @@ $(document).ready(function(){
                                 }
 
                                 $('#answer-b-plus-box').fadeIn();
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        return false;
+    });
+
+    $('#ot-form').submit(function(){
+        var voltageIn        = $('#ot_voltage_in').val();
+        var voltageOut       = $('#ot_voltage_out').val();
+        var primaryImpedance = $('#ot_primary_impedance').val();
+        var speakerImpedance = $('#ot_speaker_impedance').val();
+
+        if (!(((primaryImpedance != '') && (speakerImpedance != '')) || ((voltageIn != '') && (voltageOut != '') && (primaryImpedance != '')))) {
+            alert('You must either fill out the voltage and primary values, or the primary and secondary values.');
+        } else {
+            $.ajax(
+                '/process',
+                {
+                    "method"  : "POST",
+                    "headers" : {
+                        "Accept" : "application/json"
+                    },
+                    "data" : {
+                        "type"             : "ot",
+                        "voltageIn"        : voltageIn,
+                        "voltageOut"       : voltageOut,
+                        "primaryImpedance" : primaryImpedance,
+                        "speakerImpedance" : speakerImpedance
+                    },
+                    "complete" : function (xhr) {
+                        if (xhr.responseJSON != undefined) {
+                            var json = xhr.responseJSON;
+                            console.log(json);
+                            $('#answer-ot-box').hide();
+                            if ((json.speaker_impedance != undefined)) {
+                                $('#answer-ot-box')[0].innerHTML = '<h4>Speaker Impedance: ' + json.speaker_impedance + ' ohms; Primary Impedance: ' + json.primary_impedance + ' ohms<br /><span class="small">(Impedance Ratio: ' + json.impedance_ratio + ':1; Winding Ratio: ' + json.winding_ratio + ':1)</span></h4>';
+                                $('#answer-ot-box').fadeIn();
                             }
                         }
                     }

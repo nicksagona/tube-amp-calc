@@ -225,6 +225,40 @@ class Calculator
     }
 
     /**
+     * Calculate Output Transformer Values
+     *
+     * @param  int    $voltageIn
+     * @param  int    $voltageOut
+     * @param  int    $primaryImpedance
+     * @param  int    $speakerImpedance
+     * @param  int    $round
+     * @return array
+     */
+    public function calculateOTValues($voltageIn = null, $voltageOut = null, $primaryImpedance = null, $speakerImpedance = null, $round = 2)
+    {
+        $windingRatio   = null;
+        $impedanceRatio = null;
+
+        if (!empty($voltageIn) && !empty($voltageOut) && !empty($primaryImpedance)) {
+            $windingRatio     = round(($voltageOut / $voltageIn), $round);
+            $impedanceRatio   = round(pow($windingRatio, 2), $round);
+            $speakerImpedance = round(($primaryImpedance / $impedanceRatio), $round);
+        } else if (!empty($primaryImpedance) && !empty($speakerImpedance)) {
+            $impedanceRatio = round(($primaryImpedance / $speakerImpedance), $round);
+            $windingRatio   = round(sqrt($impedanceRatio), $round);
+        }
+
+        return [
+            'voltage_in'        => $voltageIn,
+            'voltage_out'       => $voltageOut,
+            'winding_ratio'     => $windingRatio,
+            'impedance_ratio'   => $impedanceRatio,
+            'primary_impedance' => $primaryImpedance,
+            'speaker_impedance' => $speakerImpedance
+        ];
+    }
+
+    /**
      * Get farad conversion values
      *
      * @return array

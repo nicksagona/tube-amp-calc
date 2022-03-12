@@ -10,5 +10,6 @@ return [
         'resistance'  => include 'forms/resistance.php',
         'capacitance' => include 'forms/capacitance.php',
         'b-plus'      => include 'forms/b-plus.php',
+        'ot'          => include 'forms/ot.php',
     ]
 ];

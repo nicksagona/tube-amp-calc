@@ -243,6 +243,10 @@ class Calculator
             $windingRatio     = round(($voltageOut / $voltageIn), $round);
             $impedanceRatio   = round(pow($windingRatio, 2), $round);
             $speakerImpedance = round(($primaryImpedance / $impedanceRatio), $round);
+        } else if (!empty($voltageIn) && !empty($voltageOut) && !empty($speakerImpedance)) {
+            $windingRatio     = round(($voltageOut / $voltageIn), $round);
+            $impedanceRatio   = round(pow($windingRatio, 2), $round);
+            $primaryImpedance = round(($speakerImpedance * $impedanceRatio), $round);
         } else if (!empty($primaryImpedance) && !empty($speakerImpedance)) {
             $impedanceRatio = round(($primaryImpedance / $speakerImpedance), $round);
             $windingRatio   = round(sqrt($impedanceRatio), $round);

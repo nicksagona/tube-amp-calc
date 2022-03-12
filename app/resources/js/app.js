@@ -323,8 +323,8 @@ $(document).ready(function(){
         var primaryImpedance = $('#ot_primary_impedance').val();
         var speakerImpedance = $('#ot_speaker_impedance').val();
 
-        if (!(((primaryImpedance != '') && (speakerImpedance != '')) || ((voltageIn != '') && (voltageOut != '') && (primaryImpedance != '')))) {
-            alert('You must either fill out the voltage and primary values, or the primary and secondary values.');
+        if (!(((primaryImpedance != '') && (speakerImpedance != '')) || ((voltageIn != '') && (voltageOut != '') && (primaryImpedance != '')) || ((voltageIn != '') && (voltageOut != '') && (speakerImpedance != '')))) {
+            alert('You must either fill out the voltage values and either a primary or secondary value; Or, you must enter the primary and secondary values.');
         } else {
             $.ajax(
                 '/process',

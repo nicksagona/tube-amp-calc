@@ -346,7 +346,7 @@ $(document).ready(function(){
                             console.log(json);
                             $('#answer-ot-box').hide();
                             if ((json.speaker_impedance != undefined)) {
-                                $('#answer-ot-box')[0].innerHTML = '<h4>Speaker Impedance: ' + json.speaker_impedance + ' ohms; Primary Impedance: ' + json.primary_impedance + ' ohms<br /><span class="small">(Impedance Ratio: ' + json.impedance_ratio + ':1; Winding Ratio: ' + json.winding_ratio + ':1)</span></h4>';
+                                $('#answer-ot-box')[0].innerHTML = '<h4>Primary: ' + json.primary_impedance  + '; Speaker: ' + json.speaker_impedance + '<br /><span class="small">(IR: ' + json.impedance_ratio + ':1; WR: ' + json.winding_ratio + ':1)</span></h4>';
                                 $('#answer-ot-box').fadeIn();
                             }
                         }

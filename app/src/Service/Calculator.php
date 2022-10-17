@@ -202,8 +202,8 @@ class Calculator
                 $upperFactor = 1.2;
                 break;
             case '5Y3':
-                $upperFactor = 1.1;
-                $lowerFactor = 1.05;
+                $upperFactor = 1.175;
+                $lowerFactor = 1.025;
                 break;
             case 'Silicon':
                 $upperFactor = 1.4;

@@ -3,6 +3,7 @@
 namespace Calc\Http\Controller;
 
 use Calc\Form;
+use Calc\Module;
 use Calc\Service;
 use Pop\Application;
 use Pop\Http\Server\Request;
@@ -109,7 +110,8 @@ class IndexController extends AbstractController
      */
     protected function prepareView($template)
     {
-        $this->view = new View($this->viewPath . '/' . $template);
+        $this->view          = new View($this->viewPath . '/' . $template);
+        $this->view->version = Module::VERSION;
     }
 
     /**

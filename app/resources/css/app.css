@@ -204,10 +204,9 @@ input[type=text] {
     clear: both;
 }
 
-
 @media (max-width: 767.98px) {
     .value-format, .value-format-list, .warning {
-        width: 100%;
+        width: 100% !important;
     }
 
     .hide {

@@ -17,6 +17,11 @@ $(document).ready(function(){
         }
     });
 
+    $('#nav > li:first-child > a').prop('class', 'nav-link active');
+    $('div.calc-div').prop('class', 'calc-div calc-inactive');
+    $('div.calc-div').css('display', 'none');
+    $('#ohms-law').fadeIn();
+
     $('#ohms-form').submit(function(){
         var current    = $('#current').val();
         var resistance = $('#resistance').val();

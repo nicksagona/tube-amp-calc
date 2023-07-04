@@ -9,6 +9,7 @@ return [
         'freq'        => include 'forms/freq.php',
         'resistance'  => include 'forms/resistance.php',
         'capacitance' => include 'forms/capacitance.php',
+        'bias'        => include 'forms/bias.php',
         'b-plus'      => include 'forms/b-plus.php',
         'ot'          => include 'forms/ot.php',
     ]

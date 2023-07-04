@@ -2,6 +2,8 @@
 
 namespace Calc\Service;
 
+use Calc\Model;
+
 class Calculator
 {
 
@@ -175,6 +177,97 @@ class Calculator
     {
         $frequencyCutoff = 1 / (2 * pi() * $this->convertToOhms($resistance) * $this->convertToFarads($capacitance));
         return round($frequencyCutoff, $round);
+    }
+
+    /**
+     * Calculate Bias
+     *
+     * @param  array  $data
+     * @param  int    $round
+     * @return array
+     */
+    public function calculateBias(array $data, $round = 2)
+    {
+        $tubeModel    = new Model\Tube();
+        $ampOperation = $data['amp_operation'] ?? null;
+        $ampBiasType  = $data['amp_bias_type'] ?? null;
+        $ampConfig    = null;
+        $tubeType     = $data['tube_type'] ?? null;
+        $numOfTubes   = null;
+        $bPlus        = $data['bPlus'] ?? null;
+        $ot1          = $data['ot1'] ?? null;
+        $ot2          = $data['ot2'] ?? null;
+        $pv1          = $data['pv1'] ?? null;
+        $pv2          = $data['pv2'] ?? null;
+        $tubeData     = $tubeModel->getTubeValues($tubeType);
+
+        if (strpos($ampConfig, 'Quartet') !== false) {
+            $numOfTubes = 4;
+        } else if (strpos($ampConfig, 'Pair') !== false) {
+            $numOfTubes = 2;
+        } else if (strpos($ampConfig, 'Single') !== false) {
+            $numOfTubes = 1;
+        }
+
+        switch ($data['amp_config']) {
+            case 'PP-Pair':
+                $ampConfig  = 'Push-Pull';
+                $numOfTubes = 2;
+                break;
+            case 'PP-Quartet':
+                $ampConfig  = 'Push-Pull';
+                $numOfTubes = 4;
+                break;
+            case 'SE-Single':
+                $ampConfig  = 'Single-Ended';
+                $numOfTubes = 1;
+                break;
+            case 'SE-Pair':
+                $ampConfig  = 'Single-Ended';
+                $numOfTubes = 2;
+                break;
+        }
+
+        $results = [
+            'amp_operation' => $ampOperation,
+            'amp_bias_type' => $ampBiasType,
+            'amp_config'    => $ampConfig,
+            'tube_type'     => (strpos($tubeType, '-') !== false) ? substr($tubeType, 0, strpos($tubeType, '-')) : $tubeType,
+            'num_of_tubes'  => $numOfTubes,
+            'nominal_bias'  => $tubeModel->getNominalBiasValue($ampOperation, $ampBiasType)
+        ];
+
+        if (!empty($tubeData['plate_dissipation'])) {
+            $results['max_plate_dissipation'] = $tubeData['plate_dissipation'] . 'W';
+            $results['max_plate_voltage']     = $tubeData['plate_voltage'] . 'V';
+            $results['max_cathode_current']   = $tubeData['cathode_current'] . 'mA';
+
+            $tube1VoltageDrop      = round(($bPlus - $pv1), $round);
+            $tube1PlateCurrent     = (($data['amp_config'] == 'PP-Quartet') || ($data['amp_config'] == 'SE-Pair')) ? round(((($tube1VoltageDrop / $ot1) * 1000) / 2), $round) : round((($tube1VoltageDrop / $ot1) * 1000), $round);
+            $tube1PlateDissipation = round((($tube1PlateCurrent / 1000) * $pv1), $round);
+            $tube1BiasPoint        = round((($tube1PlateDissipation / $tubeData['plate_dissipation']) * 100), $round);
+
+            $results['tube1_voltage_drop']      = $tube1VoltageDrop . 'V';
+            $results['tube1_plate_current']     = $tube1PlateCurrent . 'mA';
+            $results['tube1_plate_dissipation'] = $tube1PlateDissipation . 'W';
+            $results['tube1_bias_point']        = $tube1BiasPoint . '%';
+            $results['tube1_bias_result']       = $tubeModel->getBiasResult($tube1BiasPoint, $ampOperation, $ampBiasType);
+
+            if (!empty($ot2) && !empty($pv2) && ($ampConfig == 'Push-Pull')) {
+                $tube2VoltageDrop      = round(($bPlus - $pv2), $round);
+                $tube2PlateCurrent     = ($data['amp_config'] == 'PP-Quartet') ? round(((($tube2VoltageDrop / $ot2) * 1000) / 2), $round) : round((($tube2VoltageDrop / $ot2) * 1000), $round);
+                $tube2PlateDissipation = round((($tube2PlateCurrent / 1000) * $pv2), $round);
+                $tube2BiasPoint        = round((($tube2PlateDissipation / $tubeData['plate_dissipation']) * 100), $round);
+
+                $results['tube2_voltage_drop']      = $tube2VoltageDrop . 'V';
+                $results['tube2_plate_current']     = $tube2PlateCurrent . 'mA';
+                $results['tube2_plate_dissipation'] = $tube2PlateDissipation . 'W';
+                $results['tube2_bias_point']        = $tube2BiasPoint . '%';
+                $results['tube2_bias_result']       = $tubeModel->getBiasResult($tube2BiasPoint, $ampOperation, $ampBiasType);
+            }
+        }
+
+        return $results;
     }
 
     /**

@@ -159,7 +159,8 @@ class IndexController extends AbstractController
         }
 
         $this->prepareView('error.phtml');
-        $this->view->title = 'Tube Amp Calculator';
+        $this->view->title    = 'Tube Amp Calculator';
+        $this->view->subtitle = 'Common Equations for General Audio &amp; Tube Amps';
 
         $this->response->setCode($code)
             ->setBody($this->view->render());
@@ -177,7 +178,8 @@ class IndexController extends AbstractController
         $calculator = new Service\Calculator();
 
         $this->prepareView('index.phtml');
-        $this->view->title = 'Tube Amp Calculator';
+        $this->view->title    = 'Tube Amp Calculator';
+        $this->view->subtitle = 'Common Equations for General Audio &amp; Tube Amps';
 
         $this->view->formOhm         = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['ohms']);
         $this->view->formVoltageDiv  = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['voltage-div']);
@@ -185,6 +187,7 @@ class IndexController extends AbstractController
         $this->view->formFreq        = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['freq']);
         $this->view->formResistance  = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['resistance']);
         $this->view->formCapacitance = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['capacitance']);
+        $this->view->formBias        = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['bias']);
         $this->view->formBPlus       = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['b-plus']);
         $this->view->formOT          = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['ot']);
 
@@ -194,6 +197,7 @@ class IndexController extends AbstractController
         $this->view->formFreq->setAttributes(['id' => 'freq-form']);
         $this->view->formResistance->setAttributes(['id' => 'res-form']);
         $this->view->formCapacitance->setAttributes(['id' => 'cap-form']);
+        $this->view->formBias->setAttributes(['id' => 'bias-form']);
         $this->view->formBPlus->setAttributes(['id' => 'b-plus-form']);
         $this->view->formOT->setAttributes(['id' => 'ot-form']);
 
@@ -265,6 +269,9 @@ class IndexController extends AbstractController
                         ]
                     ];
 
+                    break;
+                case 'bias':
+                    $results = $calculator->calculateBias($post);
                     break;
                 case 'b-plus':
                     $results = $calculator->calculateBPlusVoltage($post['vac'], $post['rectifier']);

@@ -34,15 +34,32 @@ input[type=text] {
     background-color: #efefef;
 }
 
+.error {
+    font-weight: bold;
+    color: #f00;
+}
+
 .main-header {
-    margin: 25px 0 25px 0;
+    margin: 25px 0 10px 0;
     padding: 0;
     text-align: center;
     color: #000;
 }
 
+.sub-header {
+    margin: 10px 0 20px 0;
+    padding: 0;
+    text-align: center;
+}
+
 .center {
     text-align: center;
+}
+
+.footer {
+    margin: 20px 0 20px 0;
+    padding: 20px 0 20px 0;
+    font-size: 0.9em;
 }
 
 .pad {
@@ -79,4 +96,77 @@ input[type=text] {
     height: 70px;
     display: none;
     text-align: center;
+}
+.answer-bias {
+    margin: 0 0 40px 0;
+    padding: 0;
+    min-height: 160px;
+    overflow: auto;
+    display: block;
+}
+
+.answer-box-bias {
+    margin: 0 auto 25px auto !important;
+    padding: 25px !important;
+    border-radius: 3px;
+    min-height: 160px;
+    display: none;
+    text-align: left;
+    overflow: auto;
+    border: solid 1px #ccc;
+}
+
+.hot {
+    color: #f00;
+}
+.warm {
+    color: darkorange;
+}
+
+.nominal {
+    color: forestgreen;
+}
+
+.cool {
+    color: dodgerblue;
+}
+
+.cold {
+    color: blueviolet;
+}
+
+.bias-tube-1 {
+    float: left;
+    width: 44%;
+}
+
+.bias-tube-2 {
+    float: right;
+    width: 49%;
+    border-left: solid 1px #ccc;
+    padding-left: 5%;
+}
+
+#bias-form-fieldset-1 > dl > dd:nth-child(2), #bias-form-fieldset-1 > dl > dd:nth-child(5),
+#bias-form-fieldset-1 > dl > dd:nth-child(10), #bias-form-fieldset-1 > dl > dd:nth-child(13){
+    float: left;
+    width: 49%;
+}
+
+#bias-form-fieldset-1 > dl > dd:nth-child(3), #bias-form-fieldset-1 > dl > dd:nth-child(6),
+#bias-form-fieldset-1 > dl > dd:nth-child(11), #bias-form-fieldset-1 > dl > dd:nth-child(14) {
+    float: right;
+    width: 49%;
+}
+
+#bias-form-fieldset-1 > dl > dt:nth-child(4), #bias-form-fieldset-1 > dl > dt:nth-child(7),
+#bias-form-fieldset-1 > dl > dt:nth-child(12), #bias-form-fieldset-1 > dl > dt:nth-child(15) {
+    clear: both;
+}
+
+
+@media (max-width: 767.98px) {
+    .hide {
+        display: none;
+    }
 }

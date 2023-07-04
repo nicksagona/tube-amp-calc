@@ -28,14 +28,17 @@ $(document).ready(function(){
                 case '#capacitance-calc':
                     $('#nav > li:nth-child(6) > a').prop('class', 'nav-link active');
                     break;
-                case '#b-plus-calc':
+                case '#bias-calc':
                     $('#nav > li:nth-child(7) > a').prop('class', 'nav-link active');
                     break;
-                case '#ot-calc':
+                case '#b-plus-calc':
                     $('#nav > li:nth-child(8) > a').prop('class', 'nav-link active');
                     break;
-                case '#capacitance-chart':
+                case '#ot-calc':
                     $('#nav > li:nth-child(9) > a').prop('class', 'nav-link active');
+                    break;
+                case '#capacitance-chart':
+                    $('#nav > li:nth-child(10) > a').prop('class', 'nav-link active');
                     break;
             }
         }
@@ -267,6 +270,77 @@ $(document).ready(function(){
                                 $('#answer-capacitance-box')[0].innerHTML = '<h4>' + json.capacitance.F + '<br /><span class="small">[' + json.capacitance.uF + 'uF, ' + json.capacitance.nF + 'nF, ' + json.capacitance.pF + 'pF]</span></h4>';
                                 $('#answer-capacitance-box').fadeIn();
                             }
+                        }
+                    }
+                }
+            );
+        }
+
+        return false;
+    });
+
+    $('#bias-form').submit(function() {
+
+        var ampOperation = $('#amp_operation').val();
+        var ampBiasType  = $('#amp_bias_type').val();
+        var ampConfig    = $('#amp_config').val();
+        var tubeType     = $('#tube_type').val();
+        var ot1          = $('#ot_primary_resistance_1').val();
+        var ot2          = $('#ot_primary_resistance_2').val();
+        var bPlus        = $('#b_plus').val();
+        var pv1          = $('#plate_voltage_1').val();
+        var pv2          = $('#plate_voltage_2').val();
+
+        if ((ot1 == '') || (bPlus == '') || (pv1 == '')) {
+            alert('You must fill out the B+ voltage and at least one of the OT and plate voltage values.');
+        } else {
+            $.ajax(
+                '/process',
+                {
+                    "method"  : "POST",
+                    "headers" : {
+                        "Accept" : "application/json"
+                    },
+                    "data" : {
+                        "type"          : "bias",
+                        "amp_operation" : ampOperation,
+                        "amp_bias_type" : ampBiasType,
+                        "amp_config"    : ampConfig,
+                        "tube_type"     : tubeType,
+                        "bPlus"         : bPlus,
+                        "ot1"           : ot1,
+                        "ot2"           : ot2,
+                        "pv1"           : pv1,
+                        "pv2"           : pv2,
+                    },
+                    "complete" : function (xhr) {
+                        if (xhr.responseJSON != undefined) {
+                            var json    = xhr.responseJSON;
+                            var tubeNum = (json.num_of_tubes == 4) ?' (2 Tubes)' : ' (1 Tube)';
+                            $('#answer-bias-box').hide();
+
+                            var html = '<h5>' + json.tube_type + '</h5>' +
+                                '<strong>Max Plate Dissipation:</strong> ' + json.max_plate_dissipation + '<br />' +
+                                '<strong>Max Plate Voltage:</strong> ' + json.max_plate_voltage + '<br />' +
+                                '<strong>Max Cathode Current:</strong> ' + json.max_cathode_current + '<br />' +
+                                '<strong>Number of Tubes:</strong> ' + json.num_of_tubes + '<br /><br />' +
+                                '<p><em>Nominal bias target of <strong>' + json.nominal_bias + '%</strong> for a ' + json.amp_config + ' ' + json.amp_operation + ', ' + json.amp_bias_type + ' amp.</em></p>' +
+                                '<div class="bias-tube-1"><h6 style="font-weight: bold;">Tube Set #1' + tubeNum + '</h6>' +
+                                '<strong>Bias:</strong> ' + json.tube1_bias_point + ' (<strong class="' + json.tube1_bias_result.toLowerCase() + '">' +
+                                    json.tube1_bias_result + '</strong>)<br />' +
+                                '<strong>P<span class="hide">late </span>C<span class="hide">urrent</span>:</strong> ' + json.tube1_plate_current + '<br />' +
+                                '<strong>P<span class="hide">late </span>D<span class="hide">issipation</span>:</strong> ' + json.tube1_plate_dissipation + '<span class="hide"> (of ' + json.max_plate_dissipation + ' max)</span><br /></div>';
+
+                            if ((json.tube2_bias_point != undefined) && (json.tube2_bias_point != '')) {
+                                html = html + '<div class="bias-tube-2"><h6 style="font-weight: bold;">Tube Set #2' + tubeNum + '</h6>' +
+                                    '<strong>Bias:</strong> ' + json.tube2_bias_point + ' (<strong class="' + json.tube2_bias_result.toLowerCase() + '">' +
+                                    json.tube2_bias_result + '</strong>)<br />' +
+                                    '<strong>P<span class="hide">late </span>C<span class="hide">urrent</span>:</strong> ' + json.tube2_plate_current + '<br />' +
+                                    '<strong>P<span class="hide">late </span>D<span class="hide">issipation</span>:</strong> ' + json.tube2_plate_dissipation + '<span class="hide"> (of ' + json.max_plate_dissipation + ' max)</span><br /></div>';
+                            }
+
+                            $('#answer-bias-box')[0].innerHTML = html;
+                            $('#answer-bias-box').fadeIn();
                         }
                     }
                 }

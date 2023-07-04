@@ -8,7 +8,7 @@ This calculator utilizes the output transformer resistance to measure the plate 
 INSTR;
 
 return [
-    '<a href="#" class="float-right small" style="margin-top: 10px; margin-right: 20px; font-size: 0.60em;">Reset</a>Bias<br /><span class="instructions">' . $biasInstructions . '</span>' => [
+    'Bias<br /><span class="instructions">' . $biasInstructions . '</span>' => [
         'amp_operation'   => [
             'type'  => 'select',
             'label' => 'Amp Operation &amp; Bias Type',

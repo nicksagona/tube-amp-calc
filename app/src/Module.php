@@ -12,7 +12,7 @@ class Module extends \Pop\Module\Module
      * Module version
      * @var string
      */
-    const VERSION = '1.1.0';
+    const VERSION = '1.2.0';
 
     /**
      * Module name

@@ -1,7 +1,13 @@
 <?php
 
+$powerInstructions = <<<INSTR
+
+Enter the current and voltage values to calculate the power in watts. Entering the max dissipation value in watts will give you the percentage of dissipation achieved.  
+
+INSTR;
+
 return [
-    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>Power<br /><span class="small">[P = I x V]</span>' => [
+    'Power<br /><span class="small">[P = I x V]</span><br /><span class="instructions">' . $powerInstructions . '</span>' => [
         'current_power'   => [
             'type'  => 'text',
             'label' => 'Current (I)',

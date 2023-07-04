@@ -24,36 +24,44 @@
     <a href="https://www.sonictoneamps.com/" target="_blank"><img src="/assets/img/sonictone-logo-white.jpg" /></a>
     <h2 class="main-header"><?=$title; ?></h2>
     <h4 class="sub-header"><?=$subtitle; ?></h4>
+    <p class="value-format">You can enter different value formats, for example:</p>
+    <ul class="value-format-list">
+        <li><strong>Resistance:</strong> 1M, 1000000, 1,000,000; 470K, 470000, 470,000; 100R, 100</li>
+        <li><strong>Capacitance:</strong> 0.022uF; 500pF; 0.001uF, 1nF, 1000pF</li>
+        <li><strong>Current:</strong> 8mA, 0.008A, 0.008</li>
+        <li><strong>Voltage:</strong> 450, 450V; 100mV, 0.1V, 0.1</li>
+    </ul>
+    <em class="warning"><strong class="error">Warning:</strong> Tube amps can contain dangerous and even lethal amounts of high voltage. Working with these voltages can be very dangerous or even fatal, so do not do so unless you are knowledgeable and skilled enough to work on tube amps.</em><br /><br />
     <ul class="nav nav-pills nav-fill" id="nav">
         <li class="nav-item">
-            <a class="nav-link active" href="#ohms-law">Ohm's Law</a>
+            <a class="nav-link active" href="#" data-div="ohms-law">Ohm's Law</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#voltage-div">Voltage</a>
+            <a class="nav-link" href="#" data-div="voltage-div">Voltage</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#power">Power</a>
+            <a class="nav-link" href="#" data-div="power">Power</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#rc-filter">RC</a>
+            <a class="nav-link" href="#" data-div="rc-filter">RC</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#resistance-calc">Resistance</a>
+            <a class="nav-link" href="#" data-div="resistance-calc">Resistance</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#capacitance-calc">Capacitance</a>
+            <a class="nav-link" href="#" data-div="capacitance-calc">Capacitance</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#bias-calc">Bias</a>
+            <a class="nav-link" href="#" data-div="bias-calc">Bias</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#b-plus-calc">B+</a>
+            <a class="nav-link" href="#" data-div="ot-calc">OT</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#ot-calc">OT</a>
+            <a class="nav-link" href="#" data-div="b-plus-calc">B+</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#capacitance-chart">Cap Conv</a>
+            <a class="nav-link" href="#" data-div="conv-chart-calc">Cap Conv</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="https://www.ampbooks.com/mobile/amplifier-calculators/cathode-capacitor/calculator/" target="_blank">Cathode Cap Calc</a>
@@ -62,38 +70,48 @@
             <a class="nav-link" href="https://www.vtadiy.com/loadline-calculators/loadline-calculator/#calculator" target="_blank">Load Line Calc</a>
         </li>
     </ul>
-    <a name="ohms-law"></a>
+    <div id="ohms-law" class="calc-div calc-active">
 <?=$formOhm; ?>
     <div class="container answer" id="answer-ohm"><div id="answer-ohm-box" class="answer-box alert alert-success"></div></div>
-    <a name="voltage-div"></a>
+    </div>
+    <div id="voltage-div" class="calc-div calc-inactive">
 <?=$formVoltageDiv; ?>
     <div class="container answer" id="answer-voltage-div"><div id="answer-voltage-div-box" class="answer-box-double alert alert-success"></div></div>
-    <a name="power"></a>
+    </div>
+    <div id="power" class="calc-div calc-inactive">
 <?=$formPower; ?>
     <div class="container answer" id="answer-power"><div id="answer-power-box" class="answer-box-double alert alert-success"></div></div>
-    <a name="rc-filter"></a>
+    </div>
+    <div id="rc-filter" class="calc-div calc-inactive">
 <?=$formFreq; ?>
     <div class="container answer" id="answer-freq"><div id="answer-freq-box" class="answer-box alert alert-success"></div></div>
-    <a name="resistance-calc"></a>
+    </div>
+    <div id="resistance-calc" class="calc-div calc-inactive">
 <?=$formResistance; ?>
     <div class="container answer" id="answer-resistance"><div id="answer-resistance-box" class="answer-box alert alert-success"></div></div>
-    <a name="capacitance-calc"></a>
+    </div>
+    <div id="capacitance-calc" class="calc-div calc-inactive">
 <?=$formCapacitance; ?>
     <div class="container answer" id="answer-capacitance"><div id="answer-capacitance-box" class="answer-box-double alert alert-success"></div></div>
-    <a name="bias-calc"></a>
+    </div>
+    <div id="bias-calc" class="calc-div calc-inactive">
 <?=$formBias; ?>
     <div class="container answer-bias" id="answer-bias"><div id="answer-bias-box" class="answer-box-bias alert"></div></div>
-    <a name="b-plus-calc"></a>
-<?=$formBPlus; ?>
-    <div class="container answer" id="answer-b-plus"><div id="answer-b-plus-box" class="answer-box alert alert-success"></div></div>
-    <a name="ot-calc"></a>
+    </div>
+    <div id="ot-calc" class="calc-div calc-inactive">
 <?=$formOT; ?>
     <div class="container answer" id="answer-ot"><div id="answer-ot-box" class="answer-box-double alert alert-success"></div></div>
+    </div>
+    <div id="b-plus-calc" class="calc-div calc-inactive">
+<?=$formBPlus; ?>
+    <div class="container answer" id="answer-b-plus"><div id="answer-b-plus-box" class="answer-box alert alert-success"></div></div>
+    </div>
 </div>
 <div class="clearfix pad"></div>
 <div class="container">
-    <a name="capacitance-chart"></a>
-    <div><a href="#top" class="float-right small">Top</a><h3 class="center">Capacitance Conversion Chart:</h3></div>
+    <div id="conv-chart-calc" class="calc-div calc-inactive">
+    <div id="capacitance-chart">
+    <div><h3 class="center">Capacitance Conversion Chart:</h3></div>
     <table class="table">
         <thead class="thead-dark">
             <tr>
@@ -112,6 +130,8 @@
 <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
+    </div>
     <div class="footer center">
         Version <?=$version; ?><br />
         Copyright &copy; <?=date('Y'); ?>. All Rights Reserved.<br />

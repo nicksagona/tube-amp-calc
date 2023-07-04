@@ -1,7 +1,13 @@
 <?php
 
+$resistanceInstructions = <<<INSTR
+
+Enter comma-separated values of resistance to calculate the total resistance. Select the correct configuration in which the resistors are configured.
+
+INSTR;
+
 return [
-    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>Resistance' => [
+    'Resistance<br /><span class="instructions">' . $resistanceInstructions . '</span>' => [
         'resistance_values'   => [
             'type'  => 'text',
             'label' => 'Resistance Values (comma-separated)',
@@ -9,9 +15,9 @@ return [
                 'class' => 'form-control'
             ]
         ],
-        'res_type'   => [
+        'res_config'   => [
             'type'  => 'radio-set',
-            'label' => 'Type',
+            'label' => 'Configuration',
             'values' => [
                 'Parallel' => 'Parallel',
                 'Series'   => 'Series'

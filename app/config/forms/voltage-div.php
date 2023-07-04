@@ -1,7 +1,13 @@
 <?php
 
+$voltageInstructions = <<<INSTR
+
+Enter all three variables and click calculate.
+
+INSTR;
+
 return [
-    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>Voltage Divider<br /><span class="small">[V<sub>(out)</sub> = V<sub>(in)</sub> x (R<sub>2</sub> / (R<sub>1</sub> + R<sub>2</sub>))]</span>' => [
+    'Voltage Divider<br /><span class="small">[V<sub>(out)</sub> = V<sub>(in)</sub> x (R<sub>2</sub> / (R<sub>1</sub> + R<sub>2</sub>))]</span><br /><span class="instructions">' . $voltageInstructions . '</span>' => [
         'voltage_in'   => [
             'type'  => 'text',
             'label' => 'V<sub>(in)</sub>',

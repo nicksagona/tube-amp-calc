@@ -1,7 +1,13 @@
 <?php
 
+$freqInstructions = <<<INSTR
+
+Enter the resistance and capacitance values to calculate the value of the cut-off frequency.  
+
+INSTR;
+
 return [
-    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>RC Filter<br /><span class="small">[1 / 2&Pi;RC]</span>' => [
+    'RC Filter<br /><span class="small">[1 / 2&Pi;RC]</span><br /><span class="instructions">' . $freqInstructions . '</span>' => [
         'resistance_filter'   => [
             'type'  => 'text',
             'label' => 'Resistance (R)',

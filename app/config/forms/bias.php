@@ -1,7 +1,14 @@
 <?php
 
+$biasInstructions = <<<INSTR
+
+This calculator utilizes the output transformer resistance to measure the plate current to calculate the bias. Select the correct amp configuration parameters. Enter the B+ voltage and at least one OT primary resistance value and one tube plate voltage value.<br /><br />
+
+<em style="font-size: 0.9em;"><strong class="error">Warning:</strong> To perform this calculation, it requires measurements of high voltage while the amp is turned on. Working with voltages can be very dangerous or even fatal, so do not do so unless you are knowledgeable and skilled enough to work on tube amps. Please see these reference links for more information on this procedure: <a href="https://www.youtube.com/watch?v=w9B0Rhr_Y-E" target="_blank">Biasing an Amp (Part 1)</a>, <a href="https://www.youtube.com/watch?v=pjKYiSr497w" target="_blank">Biasing an Amp (Part 2)</a>, <a href="https://robrobinette.com/How_to_Bias_a_Tube_Amp.htm" target="_blank">How to Bias an Amp</a>.</em><br /><br />
+INSTR;
+
 return [
-    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a> <a href="/?reset=1#bias-calc" class="float-right small" style="margin-top: 10px; margin-right: 20px; font-size: 0.45em;">Reset</a> Bias' => [
+    '<a href="#" class="float-right small" style="margin-top: 10px; margin-right: 20px; font-size: 0.60em;">Reset</a>Bias<br /><span class="instructions">' . $biasInstructions . '</span>' => [
         'amp_operation'   => [
             'type'  => 'select',
             'label' => 'Amp Operation &amp; Bias Type',
@@ -90,7 +97,7 @@ return [
             'type'  => 'text',
             'attributes' => [
                 'class'       => 'form-control',
-                'placeholder' => '(Right Tube Set)'
+                'placeholder' => '(Right Tube Set, or Single Tube)'
             ]
         ],
         'submit' => [

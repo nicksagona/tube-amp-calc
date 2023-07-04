@@ -161,7 +161,7 @@ class IndexController extends AbstractController
         }
 
         $this->prepareView('error.phtml');
-        $this->view->title    = 'Tube Amp Calculator';
+        $this->view->title    = 'Calculator';
         $this->view->subtitle = 'Common Equations for General Audio &amp; Tube Amps';
 
         $this->response->setCode($code)
@@ -180,7 +180,7 @@ class IndexController extends AbstractController
         $calculator = new Service\Calculator();
 
         $this->prepareView('index.phtml');
-        $this->view->title    = 'Tube Amp Calculator';
+        $this->view->title    = 'Calculator';
         $this->view->subtitle = 'Common Equations for General Audio &amp; Tube Amps';
 
         $this->view->formOhm         = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['ohms']);
@@ -244,7 +244,7 @@ class IndexController extends AbstractController
                     break;
                 case 'resistance':
                     $resistanceValues = array_map('trim', explode(',', $post['resistance_values']));
-                    if ($post['resistance_type'] == 'Parallel') {
+                    if ($post['resistance_config'] == 'Parallel') {
                         $results = ['resistance' => $calculator->calculateResistanceInParallel($resistanceValues)];
                     } else {
                         $results = ['resistance' => $calculator->calculateResistanceInSeries($resistanceValues)];
@@ -252,7 +252,7 @@ class IndexController extends AbstractController
                     break;
                 case 'capacitance':
                     $capacitanceValues = array_map('trim', explode(',', $post['capacitance_values']));
-                    $capacitance = ($post['capacitance_type'] == 'Parallel') ?
+                    $capacitance = ($post['capacitance_config'] == 'Parallel') ?
                         $calculator->calculateCapacitanceInParallel($capacitanceValues) :
                         $calculator->calculateCapacitanceInSeries($capacitanceValues);
 
@@ -279,7 +279,7 @@ class IndexController extends AbstractController
                     $results = $calculator->calculateBPlusVoltage($post['vac'], $post['rectifier']);
                     break;
                 case 'ot':
-                    $results = $calculator->calculateOTValues($post['voltageIn'], $post['voltageOut'], $post['primaryImpedance'], $post['speakerImpedance']);
+                    $results = $calculator->calculateOTValues($post['voltagePrimary'], $post['voltageSecondary'], $post['primaryImpedance'], $post['speakerImpedance']);
                     break;
             }
 

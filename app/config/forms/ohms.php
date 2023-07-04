@@ -1,7 +1,13 @@
 <?php
 
+$ohmsInstructions = <<<INSTR
+
+Enter two of the variables to calculate the value of the third variable.
+
+INSTR;
+
 return [
-    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>Ohm\'s Law<br /><span class="small">[V = I x R]</span>' => [
+    'Ohm\'s Law<br /><span class="small">[V = I x R]</span><br /><span class="instructions">' . $ohmsInstructions . '</span>' => [
         'current'   => [
             'type'  => 'text',
             'label' => 'Current (I)',

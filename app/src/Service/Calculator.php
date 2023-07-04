@@ -30,7 +30,7 @@ class Calculator
      */
     public function calculateResistance($voltage, $current, $round = 2)
     {
-        return round(($voltage / $this->convertToAmps($current)), $round);
+        return round(($this->convertToVolts($voltage) / $this->convertToAmps($current)), $round);
     }
 
     /**
@@ -42,7 +42,7 @@ class Calculator
      */
     public function calculateCurrent($voltage, $resistance)
     {
-        return ($voltage / $this->convertToOhms($resistance));
+        return ($this->convertToVolts($voltage) / $this->convertToOhms($resistance));
     }
 
     /**
@@ -55,7 +55,7 @@ class Calculator
      */
     public function calculatePower($current, $voltage, $round = 2)
     {
-        return round(($this->convertToAmps($current) * $voltage), $round);
+        return round(($this->convertToAmps($current) * $this->convertToVolts($voltage)), $round);
     }
 
     /**
@@ -156,8 +156,8 @@ class Calculator
     {
         $resistance1 = $this->convertToOhms($resistance1);
         $resistance2 = $this->convertToOhms($resistance2);
-        $voltageOut  = round(($voltageIn * ($resistance2 / ($resistance1 + $resistance2))), 2);
-        $dbReduction = round((20 * log10($voltageOut / $voltageIn)), 2);
+        $voltageOut  = round(($this->convertToVolts($voltageIn) * ($resistance2 / ($resistance1 + $resistance2))), 2);
+        $dbReduction = round((20 * log10($this->convertToVolts($voltageOut) / $this->convertToVolts($voltageIn))), 2);
 
         return [
             'voltage_out'  => $voltageOut,
@@ -271,6 +271,55 @@ class Calculator
     }
 
     /**
+     * Calculate Output Transformer Values
+     *
+     * @param  int    $voltagePrimary
+     * @param  int    $voltageSecondary
+     * @param  int    $primaryImpedance
+     * @param  int    $speakerImpedance
+     * @param  int    $round
+     * @return array
+     */
+    public function calculateOTValues($voltagePrimary = null, $voltageSecondary = null, $primaryImpedance = null, $speakerImpedance = null, $round = 2)
+    {
+        $windingRatio   = null;
+        $impedanceRatio = null;
+
+        if (!empty($primaryImpedance) && (stripos($primaryImpedance, 'K') !== false)) {
+            $primaryImpedance = strtolower($primaryImpedance);
+            $primaryImpedance = substr($primaryImpedance, 0, stripos($primaryImpedance, 'k')) * 1000;
+        }
+        if (!empty($voltagePrimary)) {
+            $voltagePrimary = $this->convertToVolts($voltagePrimary);
+        }
+        if (!empty($voltageSecondary)) {
+            $voltageSecondary = $this->convertToVolts($voltageSecondary);
+        }
+        
+        if (!empty($voltageSecondary) && !empty($voltagePrimary) && !empty($primaryImpedance)) {
+            $windingRatio     = round(($voltagePrimary / $voltageSecondary), $round);
+            $impedanceRatio   = round(pow($windingRatio, 2), $round);
+            $speakerImpedance = round(($primaryImpedance / $impedanceRatio), $round);
+        } else if (!empty($voltageSecondary) && !empty($voltagePrimary) && !empty($speakerImpedance)) {
+            $windingRatio     = round(($voltagePrimary / $voltageSecondary), $round);
+            $impedanceRatio   = round(pow($windingRatio, 2), $round);
+            $primaryImpedance = round(($speakerImpedance * $impedanceRatio), $round);
+        } else if (!empty($primaryImpedance) && !empty($speakerImpedance)) {
+            $impedanceRatio = round(($primaryImpedance / $speakerImpedance), $round);
+            $windingRatio   = round(sqrt($impedanceRatio), $round);
+        }
+
+        return [
+            'voltage_primary'   => $voltagePrimary,
+            'voltage_secondary' => $voltageSecondary,
+            'winding_ratio'     => $windingRatio,
+            'impedance_ratio'   => $impedanceRatio,
+            'primary_impedance' => $primaryImpedance,
+            'speaker_impedance' => $speakerImpedance
+        ];
+    }
+
+    /**
      * Calculate B+ voltage
      *
      * @param  int    $vac
@@ -314,44 +363,6 @@ class Calculator
         return [
             'upper_voltage' => $upperVoltage,
             'lower_voltage' => $lowerVoltage
-        ];
-    }
-
-    /**
-     * Calculate Output Transformer Values
-     *
-     * @param  int    $voltageIn
-     * @param  int    $voltageOut
-     * @param  int    $primaryImpedance
-     * @param  int    $speakerImpedance
-     * @param  int    $round
-     * @return array
-     */
-    public function calculateOTValues($voltageIn = null, $voltageOut = null, $primaryImpedance = null, $speakerImpedance = null, $round = 2)
-    {
-        $windingRatio   = null;
-        $impedanceRatio = null;
-
-        if (!empty($voltageIn) && !empty($voltageOut) && !empty($primaryImpedance)) {
-            $windingRatio     = round(($voltageOut / $voltageIn), $round);
-            $impedanceRatio   = round(pow($windingRatio, 2), $round);
-            $speakerImpedance = round(($primaryImpedance / $impedanceRatio), $round);
-        } else if (!empty($voltageIn) && !empty($voltageOut) && !empty($speakerImpedance)) {
-            $windingRatio     = round(($voltageOut / $voltageIn), $round);
-            $impedanceRatio   = round(pow($windingRatio, 2), $round);
-            $primaryImpedance = round(($speakerImpedance * $impedanceRatio), $round);
-        } else if (!empty($primaryImpedance) && !empty($speakerImpedance)) {
-            $impedanceRatio = round(($primaryImpedance / $speakerImpedance), $round);
-            $windingRatio   = round(sqrt($impedanceRatio), $round);
-        }
-
-        return [
-            'voltage_in'        => $voltageIn,
-            'voltage_out'       => $voltageOut,
-            'winding_ratio'     => $windingRatio,
-            'impedance_ratio'   => $impedanceRatio,
-            'primary_impedance' => $primaryImpedance,
-            'speaker_impedance' => $speakerImpedance
         ];
     }
 
@@ -483,6 +494,21 @@ class Calculator
         }
 
         return $capacitance;
+    }
+
+    /**
+     * Convert string value to volts
+     *
+     * @param  string $voltage
+     * @return float
+     */
+    public function convertToVolts($voltage)
+    {
+        if (substr(strtolower($voltage), -2) == 'mv') {
+            $voltage = substr($voltage, 0, -2) / 1000;
+        }
+
+        return $voltage;
     }
 
     /**

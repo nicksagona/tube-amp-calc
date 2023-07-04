@@ -1,7 +1,13 @@
 <?php
 
+$capacitanceInstructions = <<<INSTR
+
+Enter comma-separated values of capacitance to calculate the total capacitance. Select the correct configuration in which the capacitors are configured.
+
+INSTR;
+
 return [
-    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>Capacitance' => [
+    'Capacitance<br /><span class="instructions">' . $capacitanceInstructions . '</span>' => [
         'capacitance_values'   => [
             'type'  => 'text',
             'label' => 'Capacitance Values (comma-separated)',
@@ -9,9 +15,9 @@ return [
                 'class' => 'form-control'
             ]
         ],
-        'cap_type'   => [
+        'cap_config'   => [
             'type'  => 'radio-set',
-            'label' => 'Type',
+            'label' => 'Configuration',
             'values' => [
                 'Parallel' => 'Parallel',
                 'Series'   => 'Series'

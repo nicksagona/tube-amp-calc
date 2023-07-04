@@ -5,42 +5,15 @@
 var app = {};
 
 $(document).ready(function(){
-    $(window).on('hashchange', function(e){
-        var hash = window.location.hash;
-        if ((hash != '') && (hash != '#top')) {
+    $('#nav > li > a').click(function() {
+        if ($(this).attr('href') == '#') {
             $('#nav > li > a').prop('class', 'nav-link');
-            switch (hash) {
-                case '#ohms-law':
-                    $('#nav > li:nth-child(1) > a').prop('class', 'nav-link active');
-                    break;
-                case '#voltage-div':
-                    $('#nav > li:nth-child(2) > a').prop('class', 'nav-link active');
-                    break;
-                case '#power':
-                    $('#nav > li:nth-child(3) > a').prop('class', 'nav-link active');
-                    break;
-                case '#rc-filter':
-                    $('#nav > li:nth-child(4) > a').prop('class', 'nav-link active');
-                    break;
-                case '#resistance-calc':
-                    $('#nav > li:nth-child(5) > a').prop('class', 'nav-link active');
-                    break;
-                case '#capacitance-calc':
-                    $('#nav > li:nth-child(6) > a').prop('class', 'nav-link active');
-                    break;
-                case '#bias-calc':
-                    $('#nav > li:nth-child(7) > a').prop('class', 'nav-link active');
-                    break;
-                case '#b-plus-calc':
-                    $('#nav > li:nth-child(8) > a').prop('class', 'nav-link active');
-                    break;
-                case '#ot-calc':
-                    $('#nav > li:nth-child(9) > a').prop('class', 'nav-link active');
-                    break;
-                case '#capacitance-chart':
-                    $('#nav > li:nth-child(10) > a').prop('class', 'nav-link active');
-                    break;
-            }
+            $(this).prop('class', 'nav-link active');
+
+            $('div.calc-div').prop('class', 'calc-div calc-inactive');
+            $('div.calc-div').css('display', 'none');
+            $('#' + $(this).data('div')).fadeIn();
+            return false;
         }
     });
 
@@ -207,8 +180,8 @@ $(document).ready(function(){
     });
 
     $('#res-form').submit(function(){
-        var resistanceValues  = $('#resistance_values').val();
-        var resistanceType    = $('input[name=res_type]:checked', '#res-form').val();
+        var resistanceValues = $('#resistance_values').val();
+        var resistanceConfig = $('input[name=res_config]:checked', '#res-form').val();
 
         if (resistanceValues == '') {
             alert('You must fill out the resistance values.');
@@ -223,7 +196,7 @@ $(document).ready(function(){
                     "data" : {
                         "type"              : "resistance",
                         "resistance_values" : resistanceValues,
-                        "resistance_type"   : resistanceType
+                        "resistance_config" : resistanceConfig
                     },
                     "complete" : function (xhr) {
                         if (xhr.responseJSON != undefined) {
@@ -243,8 +216,8 @@ $(document).ready(function(){
     });
 
     $('#cap-form').submit(function(){
-        var capacitanceValues  = $('#capacitance_values').val();
-        var capacitanceType    = $('input[name=cap_type]:checked', '#cap-form').val();
+        var capacitanceValues = $('#capacitance_values').val();
+        var capacitanceConfig = $('input[name=cap_config]:checked', '#cap-form').val();
 
         if (capacitanceValues == '') {
             alert('You must fill out the capacitance values.');
@@ -259,12 +232,11 @@ $(document).ready(function(){
                     "data" : {
                         "type"              : "capacitance",
                         "capacitance_values" : capacitanceValues,
-                        "capacitance_type"   : capacitanceType
+                        "capacitance_config" : capacitanceConfig
                     },
                     "complete" : function (xhr) {
                         if (xhr.responseJSON != undefined) {
                             var json = xhr.responseJSON;
-                            console.log(json);
                             $('#answer-capacitance-box').hide();
                             if (json.capacitance != undefined) {
                                 $('#answer-capacitance-box')[0].innerHTML = '<h4>' + json.capacitance.F + '<br /><span class="small">[' + json.capacitance.uF + 'uF, ' + json.capacitance.nF + 'nF, ' + json.capacitance.pF + 'pF]</span></h4>';
@@ -392,13 +364,13 @@ $(document).ready(function(){
     });
 
     $('#ot-form').submit(function(){
-        var voltageIn        = $('#ot_voltage_in').val();
-        var voltageOut       = $('#ot_voltage_out').val();
+        var voltagePrimary   = $('#ot_voltage_primary').val();
+        var voltageSecondary = $('#ot_voltage_secondary').val();
         var primaryImpedance = $('#ot_primary_impedance').val();
         var speakerImpedance = $('#ot_speaker_impedance').val();
 
-        if (!(((primaryImpedance != '') && (speakerImpedance != '')) || ((voltageIn != '') && (voltageOut != '') && (primaryImpedance != '')) || ((voltageIn != '') && (voltageOut != '') && (speakerImpedance != '')))) {
-            alert('You must either fill out the voltage values and either a primary or secondary value; Or, you must enter the primary and secondary values.');
+        if (!(((primaryImpedance != '') && (speakerImpedance != '')) || ((voltageSecondary != '') && (voltagePrimary != '') && (primaryImpedance != '')) || ((voltageSecondary != '') && (voltagePrimary != '') && (speakerImpedance != '')))) {
+            alert('You must either fill out both of the voltage values and either a primary or secondary impedance value; Or, you must enter both the primary and secondary values.');
         } else {
             $.ajax(
                 '/process',
@@ -409,18 +381,17 @@ $(document).ready(function(){
                     },
                     "data" : {
                         "type"             : "ot",
-                        "voltageIn"        : voltageIn,
-                        "voltageOut"       : voltageOut,
+                        "voltagePrimary"   : voltagePrimary,
+                        "voltageSecondary" : voltageSecondary,
                         "primaryImpedance" : primaryImpedance,
                         "speakerImpedance" : speakerImpedance
                     },
                     "complete" : function (xhr) {
                         if (xhr.responseJSON != undefined) {
                             var json = xhr.responseJSON;
-                            console.log(json);
                             $('#answer-ot-box').hide();
                             if ((json.speaker_impedance != undefined)) {
-                                $('#answer-ot-box')[0].innerHTML = '<h4>Primary: ' + json.primary_impedance  + '; Speaker: ' + json.speaker_impedance + '<br /><span class="small">(IR: ' + json.impedance_ratio + ':1; WR: ' + json.winding_ratio + ':1)</span></h4>';
+                                $('#answer-ot-box')[0].innerHTML = '<h4>Primary: ' + json.primary_impedance  + '; Speaker: ' + json.speaker_impedance + '<br /><span class="small">(Impedance Ratio: ' + json.impedance_ratio + ':1; Winding Ratio: ' + json.winding_ratio + ':1)</span></h4>';
                                 $('#answer-ot-box').fadeIn();
                             }
                         }

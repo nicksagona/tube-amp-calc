@@ -73,6 +73,46 @@ input[type=text] {
     padding: 25px 0 0 0;
 }
 
+.calc-active {
+    display: block;
+}
+
+.calc-inactive {
+    display: none;
+}
+
+.value-format {
+    margin: 0 auto;
+    display: block;
+    font-size: 0.9em;
+    text-align: center;
+    width: 67%;
+}
+
+.value-format-list {
+    margin: 15px auto 25px auto;
+    display: block;
+    font-size: 0.9em;
+    width: 50% !important;
+}
+
+.warning {
+    margin: 0 auto;
+    font-size: 0.9em;
+    display: block;
+    text-align: center;
+    width: 67%;
+}
+
+.instructions {
+    display: block;
+    margin: 5px 0 5px 0;
+    padding: 5px 0 5px 0;
+    font-weight: normal;
+    font-size: 0.60em;
+    line-height: 1.4em;
+}
+
 .answer {
     margin: 0 0 40px 0;
     padding: 0;
@@ -166,6 +206,10 @@ input[type=text] {
 
 
 @media (max-width: 767.98px) {
+    .value-format, .value-format-list, .warning {
+        width: 100%;
+    }
+
     .hide {
         display: none;
     }

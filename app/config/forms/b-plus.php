@@ -1,10 +1,16 @@
 <?php
 
+$bPlusInstructions = <<<INSTR
+
+To estimate the rectified B+ voltage, enter the secondary VAC value and select the type of rectifier used. Results are approximate.
+
+INSTR;
+
 return [
-    '<a href="#top" class="float-right small" style="margin-top: 10px; font-size: 0.45em;">Top</a>B+ Voltage' => [
+    'B+ Voltage<br /><span class="instructions">' . $bPlusInstructions . '</span>' => [
         'vac'   => [
             'type'  => 'text',
-            'label' => 'VAC',
+            'label' => 'Secondary VAC',
             'attributes' => [
                 'class' => 'form-control'
             ]

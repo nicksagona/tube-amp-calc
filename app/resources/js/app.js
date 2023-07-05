@@ -2,7 +2,19 @@
  * app.js
  */
 
-var app = {};
+var app = {
+    addEmail: function(emailId) {
+        var emailUser   = ['t','c','a','t','n','o','c'];
+        var emailDomain = window.location.host.replace('www.', '');
+        var email       = emailUser.reverse().join('') + '@' + emailDomain;
+        var emailHref   = 'mailto:' + email + '?subject=SonicTone+Calculator';
+        var emailTags   = $(emailId);
+        for (var i = 0; i < emailTags.length; i++) {
+            emailTags[i].innerHTML = email;
+            $(emailTags[i]).attr('href', emailHref);
+        }
+    }
+};
 
 $(document).ready(function(){
     $('#nav > li > a').click(function() {
@@ -407,4 +419,8 @@ $(document).ready(function(){
 
         return false;
     });
+
+    if ($('a.contact-email')[0] != undefined) {
+        app.addEmail('a.contact-email');
+    }
 });

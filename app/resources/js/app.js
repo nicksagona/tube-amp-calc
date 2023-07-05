@@ -5,7 +5,7 @@
 var app = {
     addEmail: function(emailId) {
         var emailUser   = ['t','c','a','t','n','o','c'];
-        var emailDomain = window.location.host.replace('www.', '');
+        var emailDomain = window.location.host.replace('www.', '').replace('calc.', '');
         var email       = emailUser.reverse().join('') + '@' + emailDomain;
         var emailHref   = 'mailto:' + email + '?subject=SonicTone+Calculator';
         var emailTags   = $(emailId);

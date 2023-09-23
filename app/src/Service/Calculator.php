@@ -30,7 +30,9 @@ class Calculator
      */
     public function calculateResistance($voltage, $current, $round = 2)
     {
-        return round(($this->convertToVolts($voltage) / $this->convertToAmps($current)), $round);
+        $v = $this->convertToVolts($voltage);
+        $a = $this->convertToAmps($current);
+        return round(($v / $a), $round);
     }
 
     /**
@@ -506,6 +508,8 @@ class Calculator
     {
         if (substr(strtolower($voltage), -2) == 'mv') {
             $voltage = substr($voltage, 0, -2) / 1000;
+        } else if (substr(strtolower($voltage), -1) == 'v') {
+            $voltage = substr($voltage, 0, -1);
         }
 
         return $voltage;
@@ -521,6 +525,8 @@ class Calculator
     {
         if (substr(strtolower($current), -2) == 'ma') {
             $current = substr($current, 0, -2) / 1000;
+        } else if (substr(strtolower($current), -1) == 'a') {
+            $current = substr($current, 0, -1);
         }
 
         return $current;

@@ -162,7 +162,7 @@ class IndexController extends AbstractController
 
         $this->prepareView('error.phtml');
         $this->view->title    = 'Calculator';
-        $this->view->subtitle = 'Common Equations for General Audio &amp; Tube Amps';
+        $this->view->subtitle = 'Common Equations for Tube Amps &amp; General Audio Electronics';
 
         $this->response->setCode($code)
             ->setBody($this->view->render());
@@ -181,7 +181,7 @@ class IndexController extends AbstractController
 
         $this->prepareView('index.phtml');
         $this->view->title    = 'Calculator';
-        $this->view->subtitle = 'Common Equations for General Audio &amp; Tube Amps';
+        $this->view->subtitle = 'Common Equations for Tube Amps &amp; General Audio Electronics';
 
         $this->view->formOhm         = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['ohms']);
         $this->view->formVoltageDiv  = Form\Calculator::createFromFieldsetConfig($this->application->config['forms']['voltage-div']);
